@@ -159,17 +159,16 @@ export default function App() {
         </main>
 
         {/* Editorial Grid Footer */}
-        <footer className="mt-24 pt-8 border-t border-[#1A1A1A]/20 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-12 gap-6 items-baseline text-xs">
-          <div className="sm:col-span-5">
-            <h4 className="text-[10px] uppercase tracking-[0.2em] font-medium opacity-40 mb-2 font-mono">
-              Engineering Focus
-            </h4>
-            <p className="text-xs text-[#1A1A1A]/70 dark:text-zinc-400 leading-relaxed font-serif italic text-sm">
-              Avionics Test GSE, industrial instrumentation, high-speed DAQ, and embedded firmware.
-            </p>
+        <footer className="mt-24 pt-8 border-t border-[#1A1A1A]/20 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs relative">
+          <div className="w-full sm:w-auto invisible hidden sm:block pointer-events-none">
+            {/* Invisible spacer balancing the right-side actions for true optical center */}
+            <div className="flex items-center gap-4">
+              <span className="text-[11px] font-mono">Resume</span>
+              <span className="text-[11px] font-mono">Top</span>
+            </div>
           </div>
 
-          <div className="sm:col-span-4 text-left sm:text-center">
+          <div className="text-center mx-auto">
             <p className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-40 font-mono">
               Available for technical inquiries
             </p>
@@ -178,7 +177,7 @@ export default function App() {
             </p>
           </div>
 
-          <div className="sm:col-span-3 flex sm:justify-end items-center gap-4">
+          <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => setIsResumeOpen(true)}

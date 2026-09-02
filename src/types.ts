@@ -48,6 +48,7 @@ export interface EducationItem {
   clubs?: string[];
   logo: string;
   url?: string;
+  degreeVerificationUrl?: string;
 }
 
 export interface PublicationItem {

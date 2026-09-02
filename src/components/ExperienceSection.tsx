@@ -1,6 +1,6 @@
 import React from 'react';
 import { WORK_EXPERIENCE, RESUME_SKILLS } from '../data/portfolioData';
-import { MapPin, Calendar, FileText, Code2, Wrench, ArrowUpRight } from 'lucide-react';
+import { MapPin, Calendar, FileText, Code2, Wrench, ArrowUpRight, Award, Globe } from 'lucide-react';
 
 interface ExperienceSectionProps {
   onOpenResume?: () => void;
@@ -51,7 +51,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
                   />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     {exp.url ? (
                       <a
                         href={exp.url}
@@ -114,7 +114,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
       <div className="pt-4 space-y-4">
         <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold flex items-center gap-2">
           <Code2 className="w-4 h-4 text-[#1A1A1A]/70 dark:text-zinc-400" />
-          <span>Technical Skills & Tooling</span>
+          <span>Technical Skills, Certifications & Credentials</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -138,7 +138,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
           <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
             <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
               <Wrench className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
-              <span>Engineering Systems & Methodologies</span>
+              <span>Engineering Systems, Protocols & Methodologies</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {RESUME_SKILLS.technicalSkills.map((skill, sIdx) => (
@@ -151,6 +151,50 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
               ))}
             </div>
           </div>
+
+          {RESUME_SKILLS.certifications && (
+            <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+              <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+                <Award className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                <span>Certifications & Safety Qualifications</span>
+              </div>
+              <ul className="space-y-1.5 text-xs text-[#1A1A1A]/80 dark:text-zinc-300 font-sans">
+                {RESUME_SKILLS.certifications.map((cert, cIdx) => (
+                  <li key={cIdx} className="flex items-start gap-2">
+                    <span className="text-[#3E4E50] dark:text-[#9FB1B3] font-bold select-none">•</span>
+                    <span>{cert}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {RESUME_SKILLS.languages && (
+            <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+              <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+                <Globe className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                <span>Languages & Honors</span>
+              </div>
+              <div className="space-y-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {RESUME_SKILLS.languages.map((lng, lIdx) => (
+                    <span
+                      key={lIdx}
+                      className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                    >
+                      {lng}
+                    </span>
+                  ))}
+                </div>
+                {RESUME_SKILLS.honorsAwards && (
+                  <div className="pt-2 border-t border-[#1A1A1A]/10 dark:border-zinc-800 text-xs text-[#1A1A1A]/70 dark:text-zinc-400 font-sans">
+                    <span className="font-semibold text-[#1A1A1A] dark:text-[#EDEDEC]">Awards: </span>
+                    {RESUME_SKILLS.honorsAwards.join(' • ')}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
