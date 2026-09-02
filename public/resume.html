@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lance Nguyen — Resume</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 0.35in 0.45in;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Times New Roman", Times, "Nimbus Roman No9 L", serif;
+      font-size: 10pt;
+      line-height: 1.25;
+      color: #000;
+      background-color: #f3f3f0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .action-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 13px;
+    }
+    .action-bar .title {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .action-bar .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.15s, opacity 0.15s;
+    }
+    .btn-primary {
+      background: #ffffff;
+      color: #111111;
+      border-color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: #e6e6e6;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .page-container {
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+    .resume-sheet {
+      width: 8.5in;
+      min-height: 11in;
+      background: #fff;
+      padding: 0.38in 0.48in;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    .name-header {
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .name {
+      font-size: 20pt;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .contact-line {
+      font-size: 9.5pt;
+      color: #222;
+    }
+    .contact-line a {
+      color: #0044bb;
+      text-decoration: underline;
+    }
+    .section-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-size: 9.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #000;
+      border-bottom: 1.2px solid #000;
+      padding-bottom: 1.5px;
+      margin-top: 9px;
+      margin-bottom: 5px;
+    }
+    .row-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .inst-name {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #000;
+    }
+    .location {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 400;
+      font-size: 9.5pt;
+      color: #000;
+    }
+    .role-title {
+      font-style: italic;
+      font-size: 9.2pt;
+      color: #000;
+    }
+    .dates {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 9pt;
+      color: #000;
+      white-space: nowrap;
+    }
+    .coursework-line, .portfolio-line, .info-line {
+      font-size: 8.8pt;
+      line-height: 1.25;
+      margin-top: 1.5px;
+    }
+    .portfolio-line a {
+      color: #0044bb;
+      text-decoration: underline;
+    }
+    ul.bullets {
+      list-style-type: disc;
+      margin-left: 17px;
+      margin-top: 2px;
+      margin-bottom: 3px;
+    }
+    ul.bullets li {
+      font-size: 8.7pt;
+      line-height: 1.25;
+      padding-left: 2px;
+      margin-bottom: 1.5px;
+      color: #111;
+    }
+    .job-block {
+      margin-bottom: 5px;
+    }
+    .sub-role {
+      margin-top: 3px;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .action-bar {
+        display: none !important;
+      }
+      .page-container {
+        padding: 0 !important;
+      }
+      .resume-sheet {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-only top action bar -->
+  <div class="action-bar">
+    <div class="title">Lance Nguyen — Resume</div>
+    <div class="buttons">
+      <button onclick="window.print()" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print / Save as PDF
+      </button>
+      <a href="/" class="btn btn-secondary">Back to Portfolio</a>
+    </div>
+  </div>
+
+  <div class="page-container">
+    <main class="resume-sheet">
+      
+      <!-- Header -->
+      <header class="name-header">
+        <h1 class="name">Lance Nguyen</h1>
+        <p class="contact-line">
+          • <a href="mailto:lnguyen9152@gmail.com">lnguyen9152@gmail.com</a> • (571) 470-3004 • <a href="https://linkedin.com/in/lance-p-nguyen/" target="_blank" rel="noopener noreferrer">linkedin.com/in/lance-p-nguyen/</a>
+        </p>
+      </header>
+
+      <!-- EDUCATION -->
+      <section>
+        <h2 class="section-title">EDUCATION</h2>
+        <div class="row-split">
+          <span class="inst-name">George Mason University – Volgenau School of Engineering</span>
+          <span class="location">Fairfax, VA</span>
+        </div>
+        <div class="row-split">
+          <span class="role-title">Bachelor of Science in Electrical Engineering</span>
+          <span class="dates">2019-2023</span>
+        </div>
+        <p class="coursework-line">
+          <strong>Relevant Coursework:</strong> Embedded System Hardware Interfaces, Physics 3, System/Control Theory, Computer Networking, Computer Organization, Linear Electronics II, Digital System Design II, Electrical Circuit Analysis II, Communication Theory
+        </p>
+        <p class="portfolio-line">
+          <strong>Personal Portfolio (Relevant Projects/Work Experience) -</strong> <a href="https://lnguyen9152.wixsite.com/portfolio" target="_blank" rel="noopener noreferrer">https://lnguyen9152.wixsite.com/portfolio</a>
+        </p>
+      </section>
+
+      <!-- WORK EXPERIENCE -->
+      <section>
+        <h2 class="section-title">WORK EXPERIENCE</h2>
+
+        <!-- Relativity Space -->
+        <div class="job-block">
+          <div class="row-split">
+            <span class="inst-name">Relativity Space</span>
+            <span class="location">Los Angeles, CA</span>
+          </div>
+          
+          <!-- Role 1 -->
+          <div>
+            <div class="row-split">
+              <span class="role-title">Ground Support Equipment Engineer II – Avionics Test</span>
+              <span class="dates">2026-Present</span>
+            </div>
+            <ul class="bullets">
+              <li>Responsible engineer of a two-person team for the design, integration, and ongoing development of high-reliability ground support systems, ensuring mission readiness and supporting Terran R&apos;s integration, test, and launch phases.</li>
+              <li>Design and deliver Engine Checkout Racks to the propulsion team, ensuring robust testing and validation of flight engines with &lt;1 us accuracy.</li>
+              <li>Support design of ground support racks for low and high voltage electrical buses used to interface with flight hardware.</li>
+              <li>Collaborate with avionics, propulsion, software, manufacturing, and integration teams to ensure reliable operation for vehicle test and launch.</li>
+              <li>Design harnesses and junction boxes for electrical power distribution and signal transmission, ensuring seamless connections between ground systems and the vehicle.</li>
+              <li>Oversee fabrication, commissioning, and validation of GSE systems, including electrical testing and calibration.</li>
+              <li>Integrate electrical systems using protocols such as Ethernet, Modbus, and SCPI for reliable data transfer and control.</li>
+            </ul>
+          </div>
+
+          <!-- Role 2 -->
+          <div class="sub-role">
+            <div class="row-split">
+              <span class="role-title">Data and Controls Engineer II – Factory Test</span>
+              <span class="dates">2025-2026</span>
+            </div>
+            <ul class="bullets">
+              <li>Develop test infrastructure, checkout cabinets, instrumentation boxes, and data systems for hardware verification ensuring 0.01% accuracy.</li>
+              <li>Integrate instrumentation (pressure transducers, RTDs, thermocouples, accelerometers, actuators, etc.) into test systems, including channel mapping and signal scaling/conditioning.</li>
+              <li>Design test systems and create work instructions using tools such as NX, Altium, and WireViz to document and communicate assembly and integration procedures with a 100% on time completion and reliability rate.</li>
+              <li>Develop PLC automation using a proprietary company framework and EtherCAT/Modbus.</li>
+              <li>Manage multiple projects simultaneously, became a subject matter expert on DACs backend, and mentor engineers on specialized topics.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- British Petroleum -->
+        <div class="job-block">
+          <div class="row-split">
+            <span class="inst-name">British Petroleum</span>
+            <span class="location">Houston, TX</span>
+          </div>
+          <div class="row-split">
+            <span class="role-title">Instrumentation, Controls, and Electrical Engineer – Production and Operations</span>
+            <span class="dates">2023-2025</span>
+          </div>
+          <ul class="bullets">
+            <li>Lead multi-disciplinary teams and contractors to execute high-budget projects, achieving a 95% on-time completion rate and delivering 80% under budget.</li>
+            <li>Optimize alarm management, implementing dynamic alarm suppression and reducing high/urgent alarm KPIs by 50%.</li>
+            <li>Enhance plant reliability by conducting RCFA (Root Cause Failure Analysis) studies, performing risk assessments, and implementing mitigation strategies, reducing deficiencies by 80%.</li>
+            <li>Conduct FAT (Factory Acceptance Test) and SAT (Site Acceptance Test) tests on brownfield projects, ensuring system functionality, integration, and compliance with design requirements.</li>
+            <li>Maintain and troubleshoot Rockwell, Honeywell, and Allen-Bradley PLCs, tracing I/O, implementing control loops, and redlining documents for accuracy.</li>
+            <li>Design and develop custom HMI screens and faceplates to improve usability and efficiency for offshore operators.</li>
+          </ul>
+        </div>
+
+        <!-- TradersAI -->
+        <div class="job-block">
+          <div class="row-split">
+            <span class="inst-name">TradersAI</span>
+            <span class="location">Fairfax, VA</span>
+          </div>
+          <div class="row-split">
+            <span class="role-title">Software Developer</span>
+            <span class="dates">2021-2022</span>
+          </div>
+          <ul class="bullets">
+            <li>Assisted in developing an algorithm-based trading strategy for /ES futures, contributing to a 351% return since 2018.</li>
+            <li>Designed and built a mobile app to send real-time trading signals using OneSignal for notifications, BeautifulSoup for web data extraction, and Pandas &amp; NumPy for data processing.</li>
+            <li>Built Python-based automation for data processing, real-time market retrieval, and trade signal execution.</li>
+            <li>Developed an automated system to generate and send real-time trade alerts based on market data.</li>
+            <li>Created a cross-platform mobile interface using Figma and AirTable, ensuring a seamless user experience.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ADDITIONAL INFORMATION -->
+      <section>
+        <h2 class="section-title">ADDITIONAL INFORMATION</h2>
+        <p class="info-line">
+          <strong>Programming Languages:</strong> Java, Python, MatLab, Simulink, Verilog, Assembly, Ladder Logic, Functional Block, Structured Text
+        </p>
+        <p class="info-line">
+          <strong>Technical Skills:</strong> Autodesk AutoCAD, P&amp;ID/Electrical/Logic Diagrams, Project Management, Gantt Charts, PSpice, Osmond PCB, Modbus/Ethernet/DeviceNet/ControlNet, Networking, Factory/Site Acceptance Testing, Document Control, Linux Command Line, VMWare Virtualization, Risk Assessments, Execution Planning, Budget Planning
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>

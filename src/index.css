@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   html {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     scroll-behavior: smooth;
     background-color: #FDFDFB;
+    color: #1A1A1A;
   }
 
-  .dark html {
+  html.dark {
     background-color: #141413;
+    color: #EDEDEC;
   }
 
   .font-serif, .serif {
@@ -28,3 +32,4 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+

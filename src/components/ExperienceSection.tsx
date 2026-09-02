@@ -1,24 +1,43 @@
 import React from 'react';
-import { WORK_EXPERIENCE } from '../data/portfolioData';
-import { MapPin, Calendar, CheckCircle2 } from 'lucide-react';
+import { WORK_EXPERIENCE, RESUME_SKILLS } from '../data/portfolioData';
+import { MapPin, Calendar, FileText, Code2, Wrench, ArrowUpRight } from 'lucide-react';
 
-export const ExperienceSection: React.FC = () => {
+interface ExperienceSectionProps {
+  onOpenResume?: () => void;
+}
+
+export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResume }) => {
   return (
     <section id="experience-section" className="space-y-8 animate-in fade-in duration-300">
-      <div className="border-b border-[#1A1A1A]/20 dark:border-zinc-800 pb-4">
-        <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
-          Professional Experience
-        </h2>
-        <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
-          Aerospace ground support systems, industrial process automation, and software engineering.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1A1A1A]/20 dark:border-zinc-800 pb-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
+            Professional Experience
+          </h2>
+          <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
+            Aerospace ground support systems, factory instrumentation DACs, and energy automation.
+          </p>
+        </div>
+
+        {onOpenResume && (
+          <button
+            type="button"
+            id="view-full-resume-btn"
+            onClick={onOpenResume}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-mono font-medium bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-[#EDEDEC] border border-[#1A1A1A]/15 dark:border-zinc-700 hover:bg-[#E2DED0] dark:hover:bg-zinc-700 transition-colors cursor-pointer self-start sm:self-auto shrink-0 hover:underline underline-offset-4 decoration-[#1A1A1A]/40"
+          >
+            <FileText className="w-3.5 h-3.5 opacity-70" />
+            <span>View Full Resume</span>
+            <ArrowUpRight className="w-3 h-3 opacity-50" />
+          </button>
+        )}
       </div>
 
       <div className="space-y-6">
         {WORK_EXPERIENCE.map((exp, idx) => (
           <div
             key={idx}
-            id={`exp-${exp.company.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+            id={`exp-${idx}-${exp.company.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
             className="rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] p-5 md:p-6 space-y-4 hover:border-[#1A1A1A]/50 dark:hover:border-zinc-600 transition-colors"
           >
             {/* Top Row: Logo, Company, Role, Badge, Period */}
@@ -33,9 +52,21 @@ export const ExperienceSection: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC]">
-                      {exp.company}
-                    </h3>
+                    {exp.url ? (
+                      <a
+                        href={exp.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1 text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC] hover:underline underline-offset-4 decoration-[#1A1A1A]/40"
+                      >
+                        <span>{exp.company}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    ) : (
+                      <h3 className="text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC]">
+                        {exp.company}
+                      </h3>
+                    )}
                     <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 font-medium border border-[#1A1A1A]/5 dark:border-zinc-700">
                       {exp.badge}
                     </span>
@@ -77,6 +108,50 @@ export const ExperienceSection: React.FC = () => {
             </ul>
           </div>
         ))}
+      </div>
+
+      {/* Technical Skills & Capabilities Matrix */}
+      <div className="pt-4 space-y-4">
+        <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold flex items-center gap-2">
+          <Code2 className="w-4 h-4 text-[#1A1A1A]/70 dark:text-zinc-400" />
+          <span>Technical Skills & Tooling</span>
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+            <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+              <Code2 className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+              <span>Programming & Controls Languages</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {RESUME_SKILLS.programmingLanguages.map((lang, lIdx) => (
+                <span
+                  key={lIdx}
+                  className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                >
+                  {lang}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+            <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+              <Wrench className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+              <span>Engineering Systems & Methodologies</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {RESUME_SKILLS.technicalSkills.map((skill, sIdx) => (
+                <span
+                  key={sIdx}
+                  className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

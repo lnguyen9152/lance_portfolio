@@ -1,6 +1,6 @@
 import React from 'react';
 import { EDUCATION, PERSONAL_INFO } from '../data/portfolioData';
-import { GraduationCap, Award, Book, Wrench, TrendingUp, BookOpen, Check } from 'lucide-react';
+import { GraduationCap, Award, Book, Wrench, TrendingUp, BookOpen, Check, ArrowUpRight } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
   return (
@@ -45,9 +45,21 @@ export const AboutSection: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <h4 className="text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC]">
-                    {edu.institution}
-                  </h4>
+                  {edu.url ? (
+                    <a
+                      href={edu.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-1 text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC] hover:underline underline-offset-4 decoration-[#1A1A1A]/40"
+                    >
+                      <span>{edu.institution}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  ) : (
+                    <h4 className="text-base md:text-lg font-semibold tracking-tight uppercase text-[#1A1A1A] dark:text-[#EDEDEC]">
+                      {edu.institution}
+                    </h4>
+                  )}
                   <div className="text-xs md:text-sm font-mono text-[#1A1A1A]/70 dark:text-zinc-400 mt-0.5">
                     {edu.degree}
                   </div>

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { Mail, Linkedin, Copy, Check, Send, MapPin, Sparkles } from 'lucide-react';
+import { Mail, Linkedin, Copy, Check, Send, MapPin, FileText, ArrowUpRight } from 'lucide-react';
 
-export const ContactSection: React.FC = () => {
+interface ContactSectionProps {
+  onOpenResume?: () => void;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenResume }) => {
   const [copied, setCopied] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [name, setName] = useState('');
@@ -33,7 +37,7 @@ export const ContactSection: React.FC = () => {
           Contact & Collaboration
         </h2>
         <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
-          Inquiries regarding aerospace avionics, industrial instrumentation, or technical consulting.
+          Inquiries regarding aerospace avionics, industrial instrumentation, or technical engineering.
         </p>
       </div>
 
@@ -78,12 +82,10 @@ export const ContactSection: React.FC = () => {
                 <div className="flex items-center gap-2.5">
                   <Linkedin className="w-4 h-4 text-[#3E4E50] dark:text-[#9FB1B3] shrink-0" />
                   <span className="text-xs md:text-sm font-mono text-[#1A1A1A] dark:text-[#EDEDEC] group-hover:underline underline-offset-4 decoration-[#1A1A1A]/40 dark:decoration-zinc-500">
-                    linkedin.com/in/lance-nguyen
+                    linkedin.com/in/lance-p-nguyen
                   </span>
                 </div>
-                <span className="text-xs font-mono text-[#1A1A1A]/40 group-hover:text-[#1A1A1A] dark:group-hover:text-zinc-200 transition-colors">
-                  ↗
-                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
               </a>
 
               {/* Location Badge */}
@@ -91,6 +93,21 @@ export const ContactSection: React.FC = () => {
                 <MapPin className="w-4 h-4 text-[#3E4E50] dark:text-[#9FB1B3] shrink-0" />
                 <span>{PERSONAL_INFO.location}</span>
               </div>
+
+              {/* Resume Quick Trigger */}
+              {onOpenResume && (
+                <button
+                  type="button"
+                  onClick={onOpenResume}
+                  className="w-full flex items-center justify-between p-3 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 border border-[#1A1A1A]/15 dark:border-zinc-700 hover:bg-[#E2DED0] dark:hover:bg-zinc-700 transition-colors cursor-pointer text-xs font-mono text-[#1A1A1A] dark:text-[#EDEDEC]"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <FileText className="w-4 h-4 text-[#3E4E50] dark:text-[#9FB1B3] shrink-0" />
+                    <span>View Resume</span>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
+                </button>
+              )}
             </div>
           </div>
         </div>

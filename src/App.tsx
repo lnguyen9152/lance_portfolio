@@ -9,16 +9,17 @@ import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
 import { ProjectModal } from './components/ProjectModal';
 import { ImageLightbox } from './components/ImageLightbox';
+import { ResumeModal } from './components/ResumeModal';
 import { ArrowUp, Heart, Terminal } from 'lucide-react';
-import { PROJECTS } from './data/portfolioData';
+import { PROJECTS, PERSONAL_INFO } from './data/portfolioData';
 
 export default function App() {
-  // Theme state
+  // Theme state: defaults to light mode unless explicitly saved as dark in localStorage
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('lance_theme');
       if (saved) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return false;
     }
     return false;
   });
@@ -37,6 +38,9 @@ export default function App() {
 
   // Selected project modal state
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // Resume modal state
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   // Lightbox state
   const [lightbox, setLightbox] = useState<{
@@ -61,9 +65,9 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // Lock background body scroll when project modal or image lightbox is active
+  // Lock background body scroll when modals or lightbox are active
   useEffect(() => {
-    if (selectedProject || lightbox.isOpen) {
+    if (selectedProject || lightbox.isOpen || isResumeOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -71,7 +75,7 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [selectedProject, lightbox.isOpen]);
+  }, [selectedProject, lightbox.isOpen, isResumeOpen]);
 
   // Sync active section to URL query param
   const handleSectionChange = (section: SectionTab) => {
@@ -123,6 +127,7 @@ export default function App() {
           darkMode={darkMode}
           setDarkMode={setDarkMode}
           onNavigateSection={handleSectionChange}
+          onOpenResume={() => setIsResumeOpen(true)}
         />
 
         {/* Minimalist Editorial Navigation Bar */}
@@ -140,13 +145,17 @@ export default function App() {
             />
           )}
 
-          {activeSection === 'experience' && <ExperienceSection />}
+          {activeSection === 'experience' && (
+            <ExperienceSection onOpenResume={() => setIsResumeOpen(true)} />
+          )}
 
           {activeSection === 'writing' && <WritingSection />}
 
           {activeSection === 'about' && <AboutSection />}
 
-          {activeSection === 'contact' && <ContactSection />}
+          {activeSection === 'contact' && (
+            <ContactSection onOpenResume={() => setIsResumeOpen(true)} />
+          )}
         </main>
 
         {/* Editorial Grid Footer */}
@@ -165,11 +174,18 @@ export default function App() {
               Available for technical inquiries
             </p>
             <p className="text-[11px] opacity-60 font-mono mt-1">
-              Lance Nguyen © {new Date().getFullYear()} • Los Angeles / D.C.
+              Lance Nguyen © {new Date().getFullYear()} • Los Angeles, CA
             </p>
           </div>
 
           <div className="sm:col-span-3 flex sm:justify-end items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setIsResumeOpen(true)}
+              className="uppercase tracking-widest text-[11px] font-medium opacity-70 hover:opacity-100 hover:underline underline-offset-4 decoration-[#1A1A1A]/40 dark:decoration-zinc-500 transition-all cursor-pointer font-mono"
+            >
+              Resume
+            </button>
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -187,6 +203,12 @@ export default function App() {
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
         onOpenLightbox={openLightbox}
+      />
+
+      {/* Official Verified Resume Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
       />
 
       {/* High-Resolution Image Lightbox */}

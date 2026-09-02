@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Project } from '../types';
-import { X, ExternalLink, FileText, Calendar, Building2, Tag, ZoomIn, ArrowLeft } from 'lucide-react';
+import { Project, ArticleBlock } from '../types';
+import { X, ExternalLink, FileText, Calendar, Building2, ZoomIn, ArrowLeft } from 'lucide-react';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -32,50 +32,73 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
   if (!project) return null;
 
-  // Helper to format text with code blocks or bold prefixes
-  const formatParagraph = (text: string, idx: number) => {
-    // If text looks like a figure title
-    if (text.startsWith('Figure ') || text.startsWith('Fig.')) {
-      return (
-        <p key={idx} className="text-xs font-serif italic text-[#1A1A1A]/60 dark:text-zinc-400 my-2">
-          {text}
-        </p>
-      );
+  const renderArticleBlock = (block: ArticleBlock, idx: number) => {
+    switch (block.type) {
+      case 'heading':
+        return (
+          <h4
+            key={idx}
+            className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] dark:text-[#EDEDEC] pt-4 pb-1 border-b border-[#1A1A1A]/10 dark:border-zinc-800/80 font-mono"
+          >
+            {block.text}
+          </h4>
+        );
+      case 'list-item':
+        return (
+          <li
+            key={idx}
+            className="text-xs md:text-sm text-[#1A1A1A]/80 dark:text-zinc-300 ml-4 list-disc leading-relaxed my-1"
+          >
+            {block.text}
+          </li>
+        );
+      case 'figure-caption':
+        return (
+          <p
+            key={idx}
+            className="text-xs font-serif italic text-[#1A1A1A]/60 dark:text-zinc-400 my-1 text-center"
+          >
+            {block.text}
+          </p>
+        );
+      case 'image':
+        if (!block.imageSrc) return null;
+        const imgIndex = project.images.indexOf(block.imageSrc);
+        const activeIndex = imgIndex >= 0 ? imgIndex : 0;
+        return (
+          <figure key={idx} className="my-5 space-y-2">
+            <div
+              className="relative group rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#E8E8E4] dark:bg-zinc-900 cursor-zoom-in"
+              onClick={() => onOpenLightbox(project.images, activeIndex)}
+            >
+              <img
+                src={block.imageSrc}
+                alt={block.caption || `${project.title} diagram`}
+                className="w-full max-h-[420px] object-contain mx-auto transition-transform duration-300 group-hover:scale-[1.01]"
+              />
+              <div className="absolute bottom-2 right-2 px-2 py-1 rounded-sm bg-black/80 text-white text-[10px] font-mono flex items-center gap-1 backdrop-blur-xs opacity-80 group-hover:opacity-100 transition-opacity">
+                <ZoomIn className="w-3 h-3" />
+                <span>Click to zoom</span>
+              </div>
+            </div>
+            {block.caption && (
+              <figcaption className="text-xs font-serif italic text-[#1A1A1A]/60 dark:text-zinc-400 text-center">
+                {block.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      case 'paragraph':
+      default:
+        return (
+          <p
+            key={idx}
+            className="text-xs md:text-sm text-[#1A1A1A]/80 dark:text-zinc-300 leading-relaxed my-3 font-sans"
+          >
+            {block.text}
+          </p>
+        );
     }
-
-    // If text looks like a code fragment or constraint item
-    if (text.startsWith('Constraint ') || text.startsWith('- ') || text.startsWith('• ')) {
-      return (
-        <li key={idx} className="text-xs md:text-sm text-[#1A1A1A]/80 dark:text-zinc-300 ml-4 list-disc leading-relaxed">
-          {text.replace(/^[-•]\s*/, '')}
-        </li>
-      );
-    }
-
-    // Section headers
-    if (
-      text.length < 50 &&
-      (text.endsWith(':') ||
-        text.startsWith('Module ') ||
-        text.startsWith('Section ') ||
-        text.startsWith('Phase ') ||
-        text.startsWith('Step '))
-    ) {
-      return (
-        <h4
-          key={idx}
-          className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] dark:text-[#EDEDEC] mt-6 mb-2 font-mono"
-        >
-          {text}
-        </h4>
-      );
-    }
-
-    return (
-      <p key={idx} className="text-xs md:text-sm text-[#1A1A1A]/80 dark:text-zinc-300 leading-relaxed my-3 font-sans">
-        {text}
-      </p>
-    );
   };
 
   return (
@@ -177,7 +200,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               </div>
             )}
 
-            {/* Hero Image with Zoom trigger */}
+            {/* Main Hero Image */}
             {project.heroImage && (
               <div
                 className="relative group rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#E8E8E4] dark:bg-zinc-900 cursor-zoom-in"
@@ -195,14 +218,22 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               </div>
             )}
 
-            {/* Preserved Full Post Text Content */}
+            {/* Preserved Full Post Text & Inlined Media Content */}
             <div className="space-y-1">
               <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold mb-3">
                 Technical Writeup & Implementation Details
               </h3>
-              {project.paragraphs.length > 0 ? (
+              {project.articleBlocks && project.articleBlocks.length > 0 ? (
+                <div className="space-y-1">
+                  {project.articleBlocks.map((block, idx) => renderArticleBlock(block, idx))}
+                </div>
+              ) : project.paragraphs.length > 0 ? (
                 <div className="space-y-2">
-                  {project.paragraphs.map((p, i) => formatParagraph(p, i))}
+                  {project.paragraphs.map((p, i) => (
+                    <p key={i} className="text-xs md:text-sm text-[#1A1A1A]/80 dark:text-zinc-300 leading-relaxed my-3 font-sans">
+                      {p}
+                    </p>
+                  ))}
                 </div>
               ) : (
                 <p className="text-xs md:text-sm text-[#1A1A1A]/70 dark:text-zinc-400 italic">
@@ -215,7 +246,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             {project.images.length > 1 && (
               <div className="pt-6 border-t border-[#1A1A1A]/10 dark:border-zinc-800">
                 <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold mb-4">
-                  Project Gallery & Schematics ({project.images.length} images)
+                  Complete Project Gallery & Schematics ({project.images.length} images)
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {project.images.map((img, idx) => (
@@ -226,7 +257,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     >
                       <img
                         src={img}
-                        alt={`${project.title} screenshot ${idx + 1}`}
+                        alt={`${project.title} schematic ${idx + 1}`}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">

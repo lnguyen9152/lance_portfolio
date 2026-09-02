@@ -1,4 +1,10 @@
-export type SectionTab = 'projects' | 'experience' | 'writing' | 'about' | 'contact';
+export interface ArticleBlock {
+  type: 'paragraph' | 'heading' | 'list-item' | 'figure-caption' | 'image';
+  text?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  caption?: string;
+}
 
 export interface Project {
   id: string;
@@ -15,7 +21,10 @@ export interface Project {
   extractedKey?: string;
   paragraphs: string[];
   images: string[];
+  articleBlocks?: ArticleBlock[];
 }
+
+export type SectionTab = 'projects' | 'experience' | 'writing' | 'about' | 'contact';
 
 export interface ExperienceItem {
   company: string;
@@ -26,6 +35,7 @@ export interface ExperienceItem {
   highlights: string[];
   logo: string;
   badge: string;
+  url?: string;
 }
 
 export interface EducationItem {
@@ -37,6 +47,7 @@ export interface EducationItem {
   coursework?: string[];
   clubs?: string[];
   logo: string;
+  url?: string;
 }
 
 export interface PublicationItem {
