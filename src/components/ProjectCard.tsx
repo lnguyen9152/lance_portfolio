@@ -1,18 +1,23 @@
 import React from 'react';
 import { Project } from '../types';
-import { ArrowUpRight, FileText, Calendar, Building2 } from 'lucide-react';
+import { ArrowUpRight, FileText, Calendar, Building2, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface ProjectCardProps {
   project: Project;
   onSelect: (project: Project) => void;
   onOpenLightbox: (images: string[], index: number) => void;
+  onEdit?: (project: Project) => void;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   onSelect,
   onOpenLightbox,
+  onEdit,
 }) => {
+  const { isAdmin } = usePortfolio();
+
   return (
     <article
       id={`project-card-${project.id}`}
@@ -26,6 +31,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             onClick={() => onSelect(project)}
           >
             <img
+              key={project.heroImage}
               src={project.heroImage}
               alt={project.title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -41,9 +47,25 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#1A1A1A]/60 dark:text-zinc-400 font-medium">
               {project.category} • {project.organization}
             </span>
-            <span className="text-[11px] font-serif italic opacity-60 shrink-0">
-              {project.year}
-            </span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-[11px] font-serif italic opacity-60">
+                {project.year}
+              </span>
+              {isAdmin && onEdit && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(project);
+                  }}
+                  className="p-1 rounded bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors cursor-pointer text-[10px] font-mono inline-flex items-center gap-1 border border-[#1A1A1A]/10 dark:border-zinc-700"
+                  title="Edit Project Details & Article"
+                >
+                  <Pencil className="w-3 h-3" />
+                  <span className="hidden sm:inline">Edit</span>
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Title */}

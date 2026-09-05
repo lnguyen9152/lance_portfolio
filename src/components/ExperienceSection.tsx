@@ -1,19 +1,35 @@
 import React from 'react';
-import { WORK_EXPERIENCE, RESUME_SKILLS } from '../data/portfolioData';
-import { MapPin, Calendar, FileText, Code2, Wrench, ArrowUpRight, Award, Globe } from 'lucide-react';
+import { RESUME_SKILLS } from '../data/portfolioData';
+import { MapPin, Calendar, FileText, Code2, Wrench, ArrowUpRight, Award, Globe, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface ExperienceSectionProps {
   onOpenResume?: () => void;
+  onEditExperience?: () => void;
 }
 
-export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResume }) => {
+export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResume, onEditExperience }) => {
+  const { experience, isAdmin } = usePortfolio();
   return (
     <section id="experience-section" className="space-y-8 animate-in fade-in duration-300">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1A1A1A]/20 dark:border-zinc-800 pb-4">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
-            Professional Experience
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
+              Professional Experience
+            </h2>
+            {isAdmin && onEditExperience && (
+              <button
+                type="button"
+                onClick={onEditExperience}
+                className="p-1 rounded bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors cursor-pointer text-[10px] font-mono inline-flex items-center gap-1 border border-[#1A1A1A]/10 dark:border-zinc-700"
+                title="Edit Experience History"
+              >
+                <Pencil className="w-3 h-3" />
+                <span>Edit</span>
+              </button>
+            )}
+          </div>
           <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
             Aerospace ground support systems, factory instrumentation DACs, and energy automation.
           </p>
@@ -34,7 +50,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
       </div>
 
       <div className="space-y-6">
-        {WORK_EXPERIENCE.map((exp, idx) => (
+        {experience.map((exp, idx) => (
           <div
             key={idx}
             id={`exp-${idx}-${exp.company.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
@@ -47,7 +63,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
                   <img
                     src={exp.logo}
                     alt={`${exp.company} logo`}
-                    className="w-full h-full object-contain"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain rounded-xs"
                   />
                 </div>
                 <div>

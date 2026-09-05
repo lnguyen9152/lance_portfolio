@@ -1,6 +1,6 @@
 import React from 'react';
 import { SectionTab } from '../types';
-import { PROJECTS, WORK_EXPERIENCE, PUBLICATIONS } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface NavigationProps {
   activeSection: SectionTab;
@@ -11,10 +11,12 @@ export const Navigation: React.FC<NavigationProps> = ({
   activeSection,
   setActiveSection,
 }) => {
+  const { projects, experience, publications } = usePortfolio();
+
   const tabs: { id: SectionTab; label: string; count?: number }[] = [
-    { id: 'projects', label: 'Projects', count: PROJECTS.length },
-    { id: 'experience', label: 'Experience', count: WORK_EXPERIENCE.length },
-    { id: 'writing', label: 'Writing', count: PUBLICATIONS.length },
+    { id: 'projects', label: 'Projects', count: projects.length },
+    { id: 'experience', label: 'Experience', count: experience.length },
+    { id: 'writing', label: 'Writing', count: publications.length },
     { id: 'about', label: 'Education' },
     { id: 'contact', label: 'Contact' },
   ];

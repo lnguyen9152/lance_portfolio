@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react';
 import { Project, ArticleBlock } from '../types';
-import { X, ExternalLink, FileText, Calendar, Building2, ZoomIn, ArrowLeft } from 'lucide-react';
+import { X, ExternalLink, FileText, Calendar, Building2, ZoomIn, ArrowLeft, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
   onOpenLightbox: (images: string[], index: number) => void;
+  onEdit?: (project: Project) => void;
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({
   project,
   onClose,
   onOpenLightbox,
+  onEdit,
 }) => {
+  const { isAdmin } = usePortfolio();
   // Prevent background body scrolling and handle Escape key
   useEffect(() => {
     if (!project) return;
@@ -31,6 +35,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   }, [project, onClose]);
 
   if (!project) return null;
+
+  // Deduplicate gallery images safely without conditional hook calls
+  const uniqueImages = Array.from(new Set(project.images || []));
 
   const renderArticleBlock = (block: ArticleBlock, idx: number) => {
     switch (block.type) {
@@ -63,13 +70,13 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         );
       case 'image':
         if (!block.imageSrc) return null;
-        const imgIndex = project.images.indexOf(block.imageSrc);
+        const imgIndex = uniqueImages.indexOf(block.imageSrc);
         const activeIndex = imgIndex >= 0 ? imgIndex : 0;
         return (
           <figure key={idx} className="my-5 space-y-2">
             <div
               className="relative group rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#E8E8E4] dark:bg-zinc-900 cursor-zoom-in"
-              onClick={() => onOpenLightbox(project.images, activeIndex)}
+              onClick={() => onOpenLightbox(uniqueImages, activeIndex)}
             >
               <img
                 src={block.imageSrc}
@@ -84,6 +91,26 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             {block.caption && (
               <figcaption className="text-xs font-serif italic text-[#1A1A1A]/60 dark:text-zinc-400 text-center">
                 {block.caption}
+              </figcaption>
+            )}
+          </figure>
+        );
+      case 'video':
+        if (!block.videoUrl) return null;
+        return (
+          <figure key={idx} className="my-5 space-y-2">
+            <div className="relative aspect-video w-full rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-black">
+              <iframe
+                src={block.videoUrl}
+                title={block.caption || 'Video footage'}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+            {block.caption && (
+              <figcaption className="text-xs font-serif italic text-[#1A1A1A]/60 dark:text-zinc-400 text-center flex items-center justify-center gap-2">
+                <span>{block.caption}</span>
               </figcaption>
             )}
           </figure>
@@ -124,14 +151,27 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               <span>Back to Projects</span>
             </button>
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1.5 rounded-sm text-[#1A1A1A]/60 hover:text-[#1A1A1A] dark:text-zinc-400 dark:hover:text-white hover:bg-[#EFECE6] dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-              aria-label="Close modal"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2">
+              {isAdmin && onEdit && (
+                <button
+                  type="button"
+                  onClick={() => onEdit(project)}
+                  className="px-2.5 py-1 text-xs font-mono uppercase tracking-wider rounded-sm bg-[#1A1A1A] text-white dark:bg-zinc-200 dark:text-zinc-900 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Pencil className="w-3 h-3" />
+                  <span>Edit Article</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="p-1.5 rounded-sm text-[#1A1A1A]/60 hover:text-[#1A1A1A] dark:text-zinc-400 dark:hover:text-white hover:bg-[#EFECE6] dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Modal Content */}
@@ -200,24 +240,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               </div>
             )}
 
-            {/* Main Hero Image */}
-            {project.heroImage && (
-              <div
-                className="relative group rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#E8E8E4] dark:bg-zinc-900 cursor-zoom-in"
-                onClick={() => onOpenLightbox(project.images, 0)}
-              >
-                <img
-                  src={project.heroImage}
-                  alt={project.title}
-                  className="w-full max-h-96 object-contain md:object-cover mx-auto transition-transform duration-300 group-hover:scale-[1.01]"
-                />
-                <div className="absolute bottom-2 right-2 px-2 py-1 rounded-sm bg-black/80 text-white text-[10px] font-mono flex items-center gap-1 backdrop-blur-xs opacity-80 group-hover:opacity-100 transition-opacity">
-                  <ZoomIn className="w-3 h-3" />
-                  <span>Click to zoom</span>
-                </div>
-              </div>
-            )}
-
             {/* Preserved Full Post Text & Inlined Media Content */}
             <div className="space-y-1">
               <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold mb-3">
@@ -241,33 +263,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 </p>
               )}
             </div>
-
-            {/* Preserved Gallery Images Grid */}
-            {project.images.length > 1 && (
-              <div className="pt-6 border-t border-[#1A1A1A]/10 dark:border-zinc-800">
-                <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold mb-4">
-                  Complete Project Gallery & Schematics ({project.images.length} images)
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {project.images.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className="relative group aspect-square rounded-sm overflow-hidden border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#E8E8E4] dark:bg-zinc-900 cursor-zoom-in"
-                      onClick={() => onOpenLightbox(project.images, idx)}
-                    >
-                      <img
-                        src={img}
-                        alt={`${project.title} schematic ${idx + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                        <ZoomIn className="w-5 h-5" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Bottom Actions */}
             <div className="pt-4 border-t border-[#1A1A1A]/10 dark:border-zinc-800 flex items-center justify-between">

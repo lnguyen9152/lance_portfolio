@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Printer, ExternalLink, FileText } from 'lucide-react';
+import { X, Printer, ExternalLink, FileText, Download } from 'lucide-react';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -38,15 +38,26 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
+            {/* Direct PDF Download */}
+            <a
+              href="/Lance_Nguyen_Resume.pdf"
+              download="Lance_Nguyen_Resume.pdf"
+              id="resume-download-pdf-btn"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-[#1A1A1A] text-white hover:bg-zinc-800 transition-colors cursor-pointer shadow-xs"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download PDF</span>
+            </a>
+
             {/* Direct Open in New Tab */}
             <a
               href="/resume.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-white text-zinc-900 border border-zinc-300 hover:bg-zinc-100 transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-white text-zinc-900 border border-zinc-300 hover:bg-zinc-100 transition-colors cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-              <span>Open in New Tab</span>
+              <span>Open in Tab</span>
             </a>
 
             {/* Print / Save as PDF */}
@@ -54,10 +65,11 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               type="button"
               id="resume-print-btn"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-[#1A1A1A] text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-white text-zinc-900 border border-zinc-300 hover:bg-zinc-100 transition-colors cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print / PDF</span>
+              <span className="hidden sm:inline">Print / PDF</span>
+              <span className="sm:hidden">Print</span>
             </button>
 
             {/* Close */}

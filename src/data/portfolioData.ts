@@ -9,11 +9,12 @@ export type { Project, ExperienceItem, EducationItem, PublicationItem };
 
 export const PERSONAL_INFO = {
   name: "Lance Nguyen",
-  title: "Avionics GSE, Test, Electrical, and Control Systems",
-  tagline: "Avionics Test GSE Engineer II at Relativity Space. Former Instrumentation, Controls, & Electrical Engineer at BP plc.",
-  bioShort: "Now based in Los Angeles, CA working in the aerospace industry on rocket avionics test ground support equipment. George Mason University Electrical Engineering alum.",
+  title: "Aerospace · Electrical Systems · Test Systems · Controls · Data Systems",
+  tagline: "Simple systems designed to solve complex challenges.",
+  bioShort: "Now based in Los Angeles, CA. I work in the aerospace industry as an Avionics Test Ground Support Equipment (GSE) Engineer II at Relativity Space.",
   bioLong: [
-    "Now based in Los Angeles, CA. I currently work in the Aerospace Industry as an Avionics Test Ground Support Equipment Engineer at Relativity Space. I graduated from George Mason University with a B.S. in Electrical Engineering.",
+    "Now based in Los Angeles, CA. I work in the aerospace industry as an Avionics Test Ground Support Equipment (GSE) Engineer II at Relativity Space.",
+    "Previously, I engineered critical instrumentation, alarm optimization, and PLC/HMI control systems as an Instrumentation, Controls, and Electrical Engineer at British Petroleum. I hold a B.S. in Electrical Engineering from George Mason University.",
     "I aspire to continue to improve my professional knowledge through the opportunities I'm presented with in both a professional and personal setting. I'm glad to always be curious about how things work, and I hope to learn as much as I can throughout my career.",
     "In my free time, I'm a huge fan of finance and enjoy learning about the commodities and equity markets. My favorite books include 'Reminiscences of a Stock Operator' by Edwin Lefèvre and 'Stock Market Wizards' by Jack D. Schwager. I also have a passion for automotive engineering, performance engine building, and track telemetry."
   ],
@@ -176,7 +177,7 @@ export const WORK_EXPERIENCE: ExperienceItem[] = [
       "Diagnosed damaged vehicle ECUs by repairing circuit boards, wiring in new performance management computers, completing wiring harness restorations/retrofits, and installing android radios with performance data-logging capabilities into customer vehicles.",
       "Tuned customer cars by leveraging knowledge in PID Control to create smooth performance curves and optimize efficiency."
     ],
-    logo: "https://static.wixstatic.com/media/32e826_9762744883f34551a0215b497b76a0d0~mv2.jpg",
+    logo: "/dmv_bmw_logo.png",
     badge: "Powertrain & Controls"
   },
   {
@@ -211,7 +212,7 @@ export const WORK_EXPERIENCE: ExperienceItem[] = [
       "Developed performance surveys, checking with students and parents once a month to identify areas of focus needed.",
       "Promoted student participation by creating targeted practice exercises that target specific weak skills identified in monthly performance surveys and test reviews."
     ],
-    logo: "https://static.wixstatic.com/media/32e826_cbbf386a3d934bbbb9c57d81966a3d82~mv2.png",
+    logo: "/vrealm_logo.svg",
     badge: "STEM Education"
   },
   {
@@ -227,7 +228,7 @@ export const WORK_EXPERIENCE: ExperienceItem[] = [
       "Created 'swarm' algorithm to enable robots to communicate live location between each other, allowing for a collaborative working environment for the robots.",
       "Optimized underlying 'swarm' algorithm to lower runtime complexity for resource savings on the onboard microprocessor."
     ],
-    logo: "https://static.wixstatic.com/media/32e826_cbbf386a3d934bbbb9c57d81966a3d82~mv2.png",
+    logo: "/gmu_logo.jpg",
     badge: "Swarm Robotics"
   }
 ];
@@ -268,7 +269,7 @@ export const EDUCATION: EducationItem[] = [
       "Pi Kappa Alpha",
       "Vietnamese Student Association"
     ],
-    logo: "https://static.wixstatic.com/media/32e826_9db7237de6144ba588c1ee1a07fc48fa~mv2.jpg"
+    logo: "/gmu_logo.jpg"
   },
   {
     institution: "Thomas Jefferson High School for Science and Technology",

@@ -1,21 +1,42 @@
 import React from 'react';
-import { PUBLICATIONS } from '../data/portfolioData';
-import { FileText, ArrowUpRight, BookOpen, Download } from 'lucide-react';
+import { FileText, ArrowUpRight, BookOpen, Download, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
-export const WritingSection: React.FC = () => {
+interface WritingSectionProps {
+  onEditPublications?: () => void;
+}
+
+export const WritingSection: React.FC<WritingSectionProps> = ({ onEditPublications }) => {
+  const { publications, isAdmin } = usePortfolio();
+
   return (
     <section id="writing-section" className="space-y-8 animate-in fade-in duration-300">
-      <div className="border-b border-[#1A1A1A]/20 dark:border-zinc-800 pb-4">
-        <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
-          Publications & Technical Writing
-        </h2>
-        <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
-          Formal engineering technical reports, published instrumentation papers, and academic research.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1A1A1A]/20 dark:border-zinc-800 pb-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold tracking-tight uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
+              Publications & Technical Writing
+            </h2>
+            {isAdmin && onEditPublications && (
+              <button
+                type="button"
+                onClick={onEditPublications}
+                className="p-1 rounded bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors cursor-pointer text-[10px] font-mono inline-flex items-center gap-1 border border-[#1A1A1A]/10 dark:border-zinc-700"
+                title="Edit Publications & Writing"
+              >
+                <Pencil className="w-3 h-3" />
+                <span>Edit</span>
+              </button>
+            )}
+          </div>
+          <p className="text-xs md:text-sm text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-serif italic">
+            Formal engineering technical reports, published instrumentation papers, and academic research.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-6">
-        {PUBLICATIONS.map((pub, idx) => (
+        {publications.map((pub, idx) => (
           <article
             key={idx}
             id={`pub-${idx}`}

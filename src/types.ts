@@ -1,9 +1,10 @@
 export interface ArticleBlock {
-  type: 'paragraph' | 'heading' | 'list-item' | 'figure-caption' | 'image';
+  type: 'paragraph' | 'heading' | 'list-item' | 'figure-caption' | 'image' | 'video';
   text?: string;
   imageSrc?: string;
   imageAlt?: string;
   caption?: string;
+  videoUrl?: string;
 }
 
 export interface Project {

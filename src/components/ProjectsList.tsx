@@ -1,12 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { Project } from '../types';
-import { PROJECTS } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { ProjectCard } from './ProjectCard';
-import { Search, Briefcase, Wrench } from 'lucide-react';
+import { Search, Briefcase, Wrench, Plus } from 'lucide-react';
 
 interface ProjectsListProps {
   onSelectProject: (project: Project) => void;
   onOpenLightbox: (images: string[], index: number) => void;
+  onEditProject?: (project: Project) => void;
+  onNewProject?: () => void;
 }
 
 export type ProjectSectionType = 'work' | 'personal';
@@ -36,7 +38,10 @@ export const isWorkProject = (proj: Project): boolean => {
 export const ProjectsList: React.FC<ProjectsListProps> = ({
   onSelectProject,
   onOpenLightbox,
+  onEditProject,
+  onNewProject,
 }) => {
+  const { projects, isAdmin } = usePortfolio();
   const [activeTab, setActiveTab] = useState<ProjectSectionType>('work');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -57,7 +62,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
     const work: Project[] = [];
     const personal: Project[] = [];
 
-    PROJECTS.forEach((proj) => {
+    projects.forEach((proj) => {
       if (matchesSearch(proj, q)) {
         if (isWorkProject(proj)) {
           work.push(proj);
@@ -68,7 +73,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
     });
 
     return { workProjects: work, personalProjects: personal };
-  }, [searchQuery]);
+  }, [projects, searchQuery]);
 
   const displayedProjects = activeTab === 'work' ? workProjects : personalProjects;
 
@@ -149,6 +154,17 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
               {personalProjects.length}
             </span>
           </button>
+
+          {isAdmin && onNewProject && (
+            <button
+              type="button"
+              onClick={onNewProject}
+              className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-emerald-600 text-white hover:bg-emerald-500 transition-colors cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Project</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -177,6 +193,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
               project={project}
               onSelect={onSelectProject}
               onOpenLightbox={onOpenLightbox}
+              onEdit={onEditProject}
             />
           ))}
         </div>

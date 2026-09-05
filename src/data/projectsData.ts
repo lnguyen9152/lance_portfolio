@@ -2,6 +2,316 @@ import { Project } from '../types';
 
 export const PROJECTS: Project[] = [
   {
+    id: "relativity-vehicle-support-racks",
+    slug: "relativity-vehicle-support-racks",
+    title: "Vehicle Support Racks: High Voltage Aux Power, Safety Automation & Operator Control",
+    category: "Aerospace GSE & Avionics",
+    tags: [
+      "Relativity Space",
+      "Avionics GSE",
+      "Modular Architecture",
+      "Common Multi-Site Control",
+      "High Voltage Safety (>400V)",
+      "Low Voltage (60V)",
+      "Harness Design & ICDs",
+      "EtherCAT & PLC",
+      "Ground Fault Monitoring",
+      "SCPI & Modbus"
+    ],
+    shortDesc: "Modular, commonly controlled 5-rack test and launch GSE suite shared across manufacturing, test, and launch sites—comprising Network & Compute, Stage 1 LV & HV, and Stage 2 LV & HV racks with dual LV (~60V) and HV (>400V) buses, EtherCAT PLC safety, and custom harnesses.",
+    heroImage: "/vehicle_racks_cad_cover.jpg",
+    featured: true,
+    year: "2025 – Present",
+    organization: "Relativity Space",
+    paragraphs: [],
+    images: [],
+    articleBlocks: [
+      {
+        type: 'paragraph',
+        text: "As an Avionics Test Ground Support Equipment (GSE) Engineer II at Relativity Space, I owned the end-to-end design, build, safety automation, harness engineering, and multi-site commissioning of the Vehicle Support Racks. Designed from the ground up around a unified modular paradigm, this 5-rack suite establishes a commonly controlled and standardized ground architecture shared seamlessly across manufacturing lines, test sites, and launch pads."
+      },
+      {
+        type: 'image',
+        imageSrc: "/five_racks_wireframe.jpg",
+        caption: "CAD Wireframe Schematic of the 5-Rack Suite: Network & Compute, Stage 1 Low Voltage (~60V), Stage 1 High Voltage (>400V), Stage 2 Low Voltage (~60V), and Stage 2 High Voltage (>400V)."
+      },
+      {
+        type: 'heading',
+        text: "The Modular 5-Rack Suite Breakdown"
+      },
+      {
+        type: 'paragraph',
+        text: "Rather than building disparate ground support setups that create site-to-site variance, the entire vehicle support architecture is partitioned into five specialized equipment racks sharing a common mechanical, electrical, and control topology:"
+      },
+      {
+        type: 'list-item',
+        text: "1. Network & Compute Rack: Houses the centralized industrial PC / EtherCAT Master PLC, managed industrial switches, VLAN segmentation, timing masters, and operator telemetry workstations. Acts as the central nervous system connecting the racks to local test consoles and remote launch network backbones."
+      },
+      {
+        type: 'list-item',
+        text: "2. Stage 1 Low Voltage (~60V) Rack: Dedicated low-voltage power distribution for booster-stage flight computers, telemetry instrumentation, pyro controllers, and guidance sensors."
+      },
+      {
+        type: 'list-item',
+        text: "3. Stage 1 High Voltage (>400V) Rack: High-power delivery rack providing >400V power rails for booster-stage electric pump drives, stage actuation, and TVCA gimbal systems, equipped with integrated Ground Fault Monitoring and safety contactors."
+      },
+      {
+        type: 'list-item',
+        text: "4. Stage 2 Low Voltage (~60V) Rack: Tailored for upper-stage avionics, powering orbital flight computers, payload bay controllers, cold-gas RCS drivers, and stage communications."
+      },
+      {
+        type: 'list-item',
+        text: "5. Stage 2 High Voltage (>400V) Rack: High-voltage supply and safety switching for upper-stage actuators, TVCA systems, and main pump drives with isolated ground monitoring."
+      },
+      {
+        type: 'heading',
+        text: "Common Multi-Site Control & Operational Continuity"
+      },
+      {
+        type: 'paragraph',
+        text: "A central design tenet of the system was achieving absolute operational and control uniformity across every company location. By utilizing a common EtherCAT software stack, identical PLC state logic, and standardized operator interfaces, test scripts and flight vehicle checkouts execute identically regardless of physical facility:"
+      },
+      {
+        type: 'list-item',
+        text: "Wormhole (Headquarters - Long Beach, CA): Main manufacturing lane operations for vehicle integration, stage-by-stage checkouts, and continuity validation."
+      },
+      {
+        type: 'list-item',
+        text: "NASA Stennis Space Center (Hancock County, MS): Static test stands for cryogenic proofing, engine acceptance runs, and stage hot-fires."
+      },
+      {
+        type: 'list-item',
+        text: "Cape Canaveral Space Force Station (LC-16 - FL): Launch complex pad operations, countdown terminal sequences, and launch-day umbilical interfaces."
+      },
+      {
+        type: 'heading',
+        text: "Modular Reconfigurability: Stage 1, Stage 2, or Full Vehicle"
+      },
+      {
+        type: 'paragraph',
+        text: "The 5-rack architecture allows test teams to modularly deploy only the specific racks required for any test milestone, or bind all five together into a single cohesive vehicle checkout system:"
+      },
+      {
+        type: 'list-item',
+        text: "Stage 1 Standalone: The Network & Compute Rack pairs with the Stage 1 LV and HV racks to support independent booster integration and stage-level testing."
+      },
+      {
+        type: 'list-item',
+        text: "Stage 2 Standalone: The Network & Compute Rack pairs with the Stage 2 LV and HV racks to support upper-stage qualification and thermal-vacuum runs."
+      },
+      {
+        type: 'list-item',
+        text: "Integrated Full-Vehicle: All five racks synchronize through high-speed EtherCAT loops to form a unified launch-day support complex, seamlessly managing inter-stage power boundaries, flight computers, and pad umbilicals."
+      },
+      {
+        type: 'heading',
+        text: "Dual-Bus Power Architecture: LV (~60V) & HV (>400V)"
+      },
+      {
+        type: 'paragraph',
+        text: "The rack suite manages two isolated, high-power electrical domains to interface with the vehicle's dual-voltage avionics architecture:"
+      },
+      {
+        type: 'list-item',
+        text: "Low Voltage Bus (~60V DC): Supplies regulated power to core flight computers, instrumentation sensors, pyrotechnic controllers, and general vehicle avionics."
+      },
+      {
+        type: 'list-item',
+        text: "High Voltage Bus (>400V DC): Drives high-power loads including electric pump drives, electro-mechanical actuators, and Thrust Vector Control Actuators (TVCAs)."
+      },
+      {
+        type: 'list-item',
+        text: "Primary Power Mode: Energizes the vehicle's avionics buses in the absence of flight batteries during shop-floor integration, component-level testing, and prolonged pad checkouts to conserve flight battery cycles."
+      },
+      {
+        type: 'list-item',
+        text: "Auxiliary Power Mode: Operates as an auxiliary ground power feed when flight batteries are installed, maintaining battery health, top-off charging, and providing load assistance during high-draw actuation testing."
+      },
+      {
+        type: 'heading',
+        text: "HV Safety Systems, GFM & Deterministic PLC Control"
+      },
+      {
+        type: 'paragraph',
+        text: "Energizing flight hardware above 400V in industrial manufacturing and pad environments introduces critical personnel and flight-hardware hazards. I designed the complete High Voltage Safety System to provide multi-layered, fail-safe protection across all racks:"
+      },
+      {
+        type: 'list-item',
+        text: "Ground Fault Monitoring (GFM): Integrated industrial insulation monitoring devices that continuously evaluate isolation resistance between high-voltage rails and chassis ground, detecting micro-leakage currents well before an insulation breakdown occurs."
+      },
+      {
+        type: 'list-item',
+        text: "Hardware Inter-Rack Safety Interlocking: Engineered deterministic inter-rack safety loops linking all five racks. If any rack detects an open door, disconnected umbilical, E-stop press, or GFM trip, high-voltage contactors drop out instantly in a hardware-guaranteed sequence."
+      },
+      {
+        type: 'list-item',
+        text: "EtherCAT PLC Safety Automation: Deployed industrial PLCs utilizing an EtherCAT distributed I/O topology to execute deterministic millisecond safety checks, contactor health verification, and dynamic state machines prior to permitting bus energization."
+      },
+      {
+        type: 'heading',
+        text: "Heterogeneous Communications & Instrumentation Protocols"
+      },
+      {
+        type: 'paragraph',
+        text: "The rack system bridges disparate instrument and control buses into a unified control framework, eliminating latency bottlenecks and protocol mismatches:"
+      },
+      {
+        type: 'list-item',
+        text: "SCPI Protocol: Precision programmable DC power supplies communicate over Ethernet using the Standard Commands for Programmable Instruments (SCPI) protocol, allowing micro-volt setpoint resolution, automated current-limit ramping, and synchronized voltage foldback."
+      },
+      {
+        type: 'list-item',
+        text: "Modbus (RTU / TCP): Ground Fault Monitors (GFMs) interface via Modbus, providing continuous isolation resistance values, alarm thresholds, and leakage fault logs directly to the supervisory controller."
+      },
+      {
+        type: 'list-item',
+        text: "EtherCAT Fieldbus: High-speed, deterministic communications between the master industrial PLC and remote slice I/O modules across all five racks, providing sub-millisecond loop times for inter-rack safety handshakes and contactor sequencing."
+      },
+      {
+        type: 'heading',
+        text: "Harness Engineering, ICDs & Physical Build"
+      },
+      {
+        type: 'paragraph',
+        text: "In addition to architecture and controls, I took full hands-on engineering ownership of the physical and electrical implementation:"
+      },
+      {
+        type: 'list-item',
+        text: "Harness Design & Build: Designed, routed, and built both the Low Voltage (~60V) and High Voltage (>400V) internal rack harnesses. Managed high-voltage creepage and clearance distances, high-current busbars, shielded twisted-pair signal routing, and mil-spec circular connectors."
+      },
+      {
+        type: 'list-item',
+        text: "Interface Control Documents (ICDs): Authored and maintained comprehensive GSE-to-Vehicle and rack-to-rack Interface Control Documents, defining pinouts, signal levels, impedance specifications, grounding topologies, and umbilical connection protocols."
+      },
+      {
+        type: 'list-item',
+        text: "Industrial Rack Build: Assembled and physically integrated the equipment racks to aerospace ground support standards, including forced-air thermal management, cable raceways, power entry panels, and ruggedized shock-isolated caster bases."
+      },
+      {
+        type: 'heading',
+        text: "Operator Control Interfaces & Test Automation (GUIs)"
+      },
+      {
+        type: 'paragraph',
+        text: "To support technician and test conductor workflows, I developed custom Graphical User Interfaces (GUIs) tailored for shop-floor checkouts and high-tempo test operations. The GUI provides real-time telemetry displays for bus voltages, currents, contactor states, and GFM resistance metrics, and I assisted with the integration of step-by-step power-up workflows and operational interlocks."
+      },
+      {
+        type: 'heading',
+        text: "Multi-Site Deployment & Commissioning"
+      },
+      {
+        type: 'paragraph',
+        text: "Following comprehensive integration and factory acceptance testing, I deployed and field-commissioned rack suites across Relativity's premier operational facilities:"
+      },
+      {
+        type: 'list-item',
+        text: "Wormhole (Headquarters - Long Beach, CA): Integrated into the main manufacturing lane to power stage assembly, vehicle-level avionics integration, and factory qualification testing."
+      },
+      {
+        type: 'list-item',
+        text: "NASA Stennis Space Center (Hancock County, MS): Deployed to engine and stage static test stands, supporting cryogenic test campaigns and high-power actuation runs under extreme environmental conditions."
+      },
+      {
+        type: 'list-item',
+        text: "Cape Canaveral Space Force Station (LC-16 - FL): Commissioned at the launch site to serve as the definitive launch-pad ground support equipment interfacing directly with the launch vehicle umbilicals and launch control center."
+      }
+    ]
+  },
+  {
+    id: "relativity-tlc-structural-test-stand",
+    slug: "relativity-tlc-structural-test-stand",
+    title: "TLC Structural Test Stand Controls & Automation",
+    category: "Aerospace Test & Automation",
+    tags: ["Relativity Space", "Factory Test", "PLC Automation", "Terran R", "Stage 2 Qualification", "VFDs & Instrumentation"],
+    shortDesc: "Commissioned site control systems, PLCs, safety traffic lights, valves, VFDs, and sensors for the TLC structural test stand, supporting the Terran R Stage 2 qualification campaign.",
+    heroImage: "/tlc_test_stand_cover_stage2.jpg?v=20260905v3",
+    featured: true,
+    year: "2025",
+    organization: "Relativity Space",
+    paragraphs: [],
+    images: [],
+    articleBlocks: [
+      {
+        type: 'paragraph',
+        text: "During my time as a Factory Test Data and Controls Engineer II at Relativity Space's Long Beach headquarters, I served as a Responsible Engineer commissioning and automating control systems for the newly activated structural test stand, known across the facility as the \"Tender Loving Crusher\" (TLC). The TLC site was engineered as a high-capacity structural test facility capable of delivering up to 6,000,000 lbs of axial compression, 170,000 lbs of shear, and proof pressures up to 250 psig to validate large-scale flight hardware."
+      },
+      {
+        type: 'heading',
+        text: "Site Control Systems Commissioning"
+      },
+      {
+        type: 'paragraph',
+        text: "My core responsibility centered on end-to-end commissioning of the site's critical control systems, field actuation, and monitoring hardware across the test stand:"
+      },
+      {
+        type: 'list-item',
+        text: "Safety Traffic Light Warning System: Commissioned and integrated multi-status industrial traffic light stacks across the test bay. Programmed deterministic state logic to visually communicate site exclusion status to operations and floor personnel—transitioning between Safe/Standby, System Pressurized, Active Test In-Progress, and Abort/Venting warning modes."
+      },
+      {
+        type: 'list-item',
+        text: "Valves & Actuator Checkout: Commissioned pneumatic and hydraulic isolation, vent, and proportional control valves across high-pressure fluid manifolds. Verified valve stroke timing, feedback limit switches, and fail-safe default states (normally closed/normally open) to ensure instantaneous emergency vent pathways."
+      },
+      {
+        type: 'list-item',
+        text: "Variable Frequency Drives (VFDs): Configured, tuned, and commissioned industrial VFDs powering high-pressure fluid pumps and hydraulic power units. Set up acceleration/deceleration ramps, speed setpoint feedback loops, and dynamic current limits to prevent fluid hammering and pressure overshoot during test fills and pressurization ramps."
+      },
+      {
+        type: 'list-item',
+        text: "Sensor Suite Integration: Installed, mapped, and scaled an extensive array of sensors across the test stand, including high-frequency pressure transducers (PTs) rated up to test proof pressures, RTDs and thermocouples for temperature tracking, string potentiometers for stage displacement, and load cell channels."
+      },
+      {
+        type: 'heading',
+        text: "PLC Automation & Test Sequencing"
+      },
+      {
+        type: 'paragraph',
+        text: "In addition to field instrumentation and actuation, I was responsible for setting up automated test routines and commissioning the industrial PLCs driving the TLC stand:"
+      },
+      {
+        type: 'list-item',
+        text: "Developed automated control logic and routines deployed to distributed PLC nodes using EtherCAT and Modbus industrial protocols."
+      },
+      {
+        type: 'list-item',
+        text: "Configured automated fill, pressurization, hold, and depressurization sequences, allowing operators to run repeatable test profiles with sub-second feedback."
+      },
+      {
+        type: 'list-item',
+        text: "Implemented hardware and software safety interlocks: hardcoded high-pressure threshold limits, sensor health cross-checks, and automated emergency abort routines that safely dump pressure in under a second if any critical metric breaches envelope limits."
+      },
+      {
+        type: 'list-item',
+        text: "Coordinated with software, test operations, and data infrastructure teams to stream all channel telemetry into the DACs backend with high fidelity for real-time visualization and post-test structural analysis."
+      },
+      {
+        type: 'heading',
+        text: "Terran R Stage 2 Qualification Campaign"
+      },
+      {
+        type: 'paragraph',
+        text: "Following the activation of the TLC test stand in August 2025, the facility was utilized for a landmark milestone in the Terran R program: the multi-week qualification and acceptance testing campaign for the second stage (Stage 2) tank."
+      },
+      {
+        type: 'paragraph',
+        text: "As reported in Relativity Space company updates in late 2025, the Stage 2 tank article was hoisted into the Long Beach structural test stand and subjected to more than 30 distinct load cases. The campaign simulated combined launch and flight loads while executing rigorous pressure proofing up to the stand's operational ratings (withstand capacity up to 250 psig), demonstrating positive structural strength and buckling margins under expected flight environments."
+      },
+      {
+        type: 'paragraph',
+        text: "The successful completion of these acceptance proof runs on the TLC stand validated the 3D-printed and friction-stir-welded tank architecture, clearing the second stage to return to the factory floor for non-destructive evaluation (NDE), modal dynamics, and final integration."
+      },
+      {
+        type: 'image',
+        imageSrc: "/tlc_test_stand_cover_stage2.jpg?v=20260905v3",
+        caption: "Terran R second stage (Stage 2) tank fitted and hoisted into the Long Beach TLC structural test stand."
+      },
+      {
+        type: 'video',
+        videoUrl: "https://www.youtube-nocookie.com/embed/tOkO-MrPGhg?start=108&end=126",
+        caption: "Official Relativity Space Terran R Program Update (1:48 – 2:06): Stage 2 tank structural acceptance testing on the Long Beach TLC test stand."
+      }
+    ]
+  },
+  {
     id: "nav-aid-replacement",
     slug: "nav-aid-replacement",
     title: "Nav-Aid Replacement",
@@ -14,7 +324,6 @@ export const PROJECTS: Project[] = [
     organization: "BP plc",
     paragraphs: [],
     images: [
-      "/navaid_card_hero.png",
       "https://static.wixstatic.com/media/32e826_e2522b05c0024e51b1ebc21aff374834~mv2.jpg",
       "https://static.wixstatic.com/media/32e826_e9f1dce6ac984ffc9d59f003aeb9fe1d~mv2.png"
     ],
@@ -135,7 +444,6 @@ export const PROJECTS: Project[] = [
     organization: "BP plc",
     paragraphs: [],
     images: [
-      "/ultrasonics_card_hero.png",
       "https://static.wixstatic.com/media/32e826_ae3c05762a00405cbbad6fd4b6c83a78~mv2.jpg",
       "https://static.wixstatic.com/media/32e826_5f70f94ee2c44ab6a2ab2dacd15c2fdb~mv2.png"
     ],
@@ -424,14 +732,13 @@ export const PROJECTS: Project[] = [
     category: "Aerospace & Embedded Systems",
     tags: ["George Mason Univ", "NASA Skyfield", "Satellite Dish", "Microcontrollers", "PCB Design"],
     shortDesc: "Automatic ephemeris tracking and guidance software system for George Mason University's 9-meter satellite dish using NASA orbital data.",
-    heroImage: "https://static.wixstatic.com/media/32e826_64b26926ab5e4f7fa9de55c0cc6a6fee~mv2.jpg",
+    heroImage: "https://static.wixstatic.com/media/32e826_4a3bc88739f54cc4be7e53e45181a143~mv2.jpg",
     featured: true,
     year: "2023",
     organization: "George Mason University",
     pdfUrl: "https://cca90530-5079-40f5-b8c1-5c80ca4ef4e0.filesusr.com/ugd/32e826_c152373d53f64f26bb94ef2216ea3ba9.pdf",
     paragraphs: [],
     images: [
-      "https://static.wixstatic.com/media/32e826_64b26926ab5e4f7fa9de55c0cc6a6fee~mv2.jpg",
       "https://static.wixstatic.com/media/32e826_4a3bc88739f54cc4be7e53e45181a143~mv2.jpg",
       "https://static.wixstatic.com/media/32e826_59ef3cd8061d4f87ae75875ba5630710~mv2.jpg",
       "https://static.wixstatic.com/media/32e826_24938e9ea36144c99068becda6e8f8c2~mv2.png",
@@ -599,18 +906,23 @@ export const PROJECTS: Project[] = [
     category: "Robotics & Control Systems",
     tags: ["Robotics", "Ultrasonic Sensors", "Autonomous Flight", "Control Loops"],
     shortDesc: "Development and validation of an autonomous passive obstacle detection and avoidance algorithm for the Parrot AR 2.0 quadrotor drone.",
-    heroImage: "https://static.wixstatic.com/media/32e826_e05f808e952847209d1fbd6ebf6dbe10",
+    heroImage: "/parrot_drone_hero.jpg",
     featured: false,
     year: "2023",
     organization: "Academic Project",
     paragraphs: [],
     images: [
-      "https://static.wixstatic.com/media/32e826_e05f808e952847209d1fbd6ebf6dbe10"
+      "/parrot_drone_hero.jpg"
     ],
     articleBlocks: [
       {
         type: 'paragraph',
         text: "In this project, I set out to develop a passive obstacle avoidance algorithm for the Parrot AR 2.0 Drone."
+      },
+      {
+        type: 'image',
+        imageSrc: "/parrot_drone_hero.jpg",
+        caption: "Figure 1. Parrot AR 2.0 Quadrotor Test Platform with Camouflage Airframe & Upgraded Rotors"
       },
       {
         type: 'heading',

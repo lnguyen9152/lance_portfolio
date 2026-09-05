@@ -10,10 +10,19 @@ import { ContactSection } from './components/ContactSection';
 import { ProjectModal } from './components/ProjectModal';
 import { ImageLightbox } from './components/ImageLightbox';
 import { ResumeModal } from './components/ResumeModal';
-import { ArrowUp, Heart, Terminal } from 'lucide-react';
-import { PROJECTS, PERSONAL_INFO } from './data/portfolioData';
+import { ArrowUp, Lock, Unlock } from 'lucide-react';
+import { PortfolioProvider, usePortfolio } from './context/PortfolioContext';
+import { AdminLoginModal } from './components/AdminLoginModal';
+import { AdminToolbar } from './components/AdminToolbar';
+import { EditProjectModal } from './components/EditProjectModal';
+import { EditProfileModal } from './components/EditProfileModal';
+import { EditExperienceModal } from './components/EditExperienceModal';
+import { EditEducationModal } from './components/EditEducationModal';
+import { EditPublicationsModal } from './components/EditPublicationsModal';
 
-export default function App() {
+function PortfolioContent() {
+  const { isAdmin } = usePortfolio();
+
   // Theme state: defaults to light mode unless explicitly saved as dark in localStorage
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -42,6 +51,15 @@ export default function App() {
   // Resume modal state
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
+  // Admin edit modals states
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isEditExperienceOpen, setIsEditExperienceOpen] = useState(false);
+  const [isEditEducationOpen, setIsEditEducationOpen] = useState(false);
+  const [isEditPublicationsOpen, setIsEditPublicationsOpen] = useState(false);
+
   // Lightbox state
   const [lightbox, setLightbox] = useState<{
     isOpen: boolean;
@@ -67,7 +85,18 @@ export default function App() {
 
   // Lock background body scroll when modals or lightbox are active
   useEffect(() => {
-    if (selectedProject || lightbox.isOpen || isResumeOpen) {
+    const hasModal =
+      selectedProject ||
+      lightbox.isOpen ||
+      isResumeOpen ||
+      isLoginOpen ||
+      isEditProjectOpen ||
+      isEditProfileOpen ||
+      isEditExperienceOpen ||
+      isEditEducationOpen ||
+      isEditPublicationsOpen;
+
+    if (hasModal) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -75,7 +104,17 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [selectedProject, lightbox.isOpen, isResumeOpen]);
+  }, [
+    selectedProject,
+    lightbox.isOpen,
+    isResumeOpen,
+    isLoginOpen,
+    isEditProjectOpen,
+    isEditProfileOpen,
+    isEditExperienceOpen,
+    isEditEducationOpen,
+    isEditPublicationsOpen,
+  ]);
 
   // Sync active section to URL query param
   const handleSectionChange = (section: SectionTab) => {
@@ -118,6 +157,16 @@ export default function App() {
     setLightbox((prev) => ({ ...prev, currentIndex: newIndex }));
   };
 
+  const handleOpenEditProject = (proj: Project) => {
+    setEditingProject(proj);
+    setIsEditProjectOpen(true);
+  };
+
+  const handleOpenNewProject = () => {
+    setEditingProject(null);
+    setIsEditProjectOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFDFB] dark:bg-[#141413] text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors duration-200 selection:bg-[#1A1A1A] selection:text-[#FDFDFB] dark:selection:bg-[#EDEDEC] dark:selection:text-[#141413]">
       {/* Main Editorial Container */}
@@ -128,6 +177,7 @@ export default function App() {
           setDarkMode={setDarkMode}
           onNavigateSection={handleSectionChange}
           onOpenResume={() => setIsResumeOpen(true)}
+          onEditProfile={() => setIsEditProfileOpen(true)}
         />
 
         {/* Minimalist Editorial Navigation Bar */}
@@ -142,16 +192,29 @@ export default function App() {
             <ProjectsList
               onSelectProject={setSelectedProject}
               onOpenLightbox={openLightbox}
+              onEditProject={handleOpenEditProject}
+              onNewProject={handleOpenNewProject}
             />
           )}
 
           {activeSection === 'experience' && (
-            <ExperienceSection onOpenResume={() => setIsResumeOpen(true)} />
+            <ExperienceSection
+              onOpenResume={() => setIsResumeOpen(true)}
+              onEditExperience={() => setIsEditExperienceOpen(true)}
+            />
           )}
 
-          {activeSection === 'writing' && <WritingSection />}
+          {activeSection === 'writing' && (
+            <WritingSection
+              onEditPublications={() => setIsEditPublicationsOpen(true)}
+            />
+          )}
 
-          {activeSection === 'about' && <AboutSection />}
+          {activeSection === 'about' && (
+            <AboutSection
+              onEditEducation={() => setIsEditEducationOpen(true)}
+            />
+          )}
 
           {activeSection === 'contact' && (
             <ContactSection onOpenResume={() => setIsResumeOpen(true)} />
@@ -172,8 +235,18 @@ export default function App() {
             <p className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-40 font-mono">
               Available for technical inquiries
             </p>
-            <p className="text-[11px] opacity-60 font-mono mt-1">
-              Lance Nguyen © {new Date().getFullYear()} • Los Angeles, CA
+            <p className="text-[11px] opacity-60 font-mono mt-1 flex items-center justify-center gap-1">
+              <span>Lance Nguyen © {new Date().getFullYear()} • Los Angeles, CA</span>
+              {/* Very small discreet login trigger at the bottom where a casual reader wouldn't notice */}
+              <button
+                type="button"
+                onClick={() => setIsLoginOpen(true)}
+                className="opacity-15 hover:opacity-75 transition-opacity text-[10px] font-mono cursor-pointer select-none p-0.5"
+                title="Authorization"
+                aria-label="Administrative access login"
+              >
+                {isAdmin ? <Unlock className="w-2.5 h-2.5 inline text-emerald-500" /> : '#'}
+              </button>
             </p>
           </div>
 
@@ -197,11 +270,65 @@ export default function App() {
         </footer>
       </div>
 
+      {/* Floating Admin Toolbar when authorized */}
+      <AdminToolbar
+        onNewProject={handleOpenNewProject}
+        onEditProfile={() => setIsEditProfileOpen(true)}
+      />
+
+      {/* Admin Login Modal (password: @Blackops9152) */}
+      <AdminLoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
+
+      {/* Edit Project / Article Modal */}
+      <EditProjectModal
+        project={editingProject}
+        isOpen={isEditProjectOpen}
+        onClose={() => {
+          setIsEditProjectOpen(false);
+          setEditingProject(null);
+        }}
+        onSaved={(updatedProj) => {
+          if (selectedProject && selectedProject.id === updatedProj.id) {
+            setSelectedProject(updatedProj);
+          }
+        }}
+      />
+
+      {/* Edit Profile & Bio Modal */}
+      <EditProfileModal
+        isOpen={isEditProfileOpen}
+        onClose={() => setIsEditProfileOpen(false)}
+      />
+
+      {/* Edit Work Experience Modal */}
+      <EditExperienceModal
+        isOpen={isEditExperienceOpen}
+        onClose={() => setIsEditExperienceOpen(false)}
+      />
+
+      {/* Edit Education Modal */}
+      <EditEducationModal
+        isOpen={isEditEducationOpen}
+        onClose={() => setIsEditEducationOpen(false)}
+      />
+
+      {/* Edit Publications Modal */}
+      <EditPublicationsModal
+        isOpen={isEditPublicationsOpen}
+        onClose={() => setIsEditPublicationsOpen(false)}
+      />
+
       {/* Case Study Full Deep Dive Modal */}
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
         onOpenLightbox={openLightbox}
+        onEdit={(proj) => {
+          handleOpenEditProject(proj);
+        }}
       />
 
       {/* Official Verified Resume Modal */}
@@ -220,5 +347,13 @@ export default function App() {
         onNavigate={navigateLightbox}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <PortfolioProvider>
+      <PortfolioContent />
+    </PortfolioProvider>
   );
 }

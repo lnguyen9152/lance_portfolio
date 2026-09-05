@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#FFFFFF"/>
+  <!-- Left grey stem -->
+  <line x1="75" y1="68" x2="94" y2="124" stroke="#C8D2DE" stroke-width="23" stroke-linecap="round"/>
+  <!-- Right vibrant blue stem overlapping in foreground -->
+  <line x1="125" y1="68" x2="99" y2="132" stroke="#0070E0" stroke-width="23" stroke-linecap="round"/>
+</svg>

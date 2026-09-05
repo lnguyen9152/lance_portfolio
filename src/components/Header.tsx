@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Mail, Linkedin, FileText, Check, ArrowUpRight, Sun, Moon, MapPin } from 'lucide-react';
-import { PERSONAL_INFO } from '../data/portfolioData';
+import { Mail, Linkedin, FileText, Check, ArrowUpRight, Sun, Moon, MapPin, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface HeaderProps {
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
   onNavigateSection: (section: 'projects' | 'experience' | 'writing' | 'about' | 'contact') => void;
   onOpenResume?: () => void;
+  onEditProfile?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigateSection, onOpenResume }) => {
+export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigateSection, onOpenResume, onEditProfile }) => {
+  const { personalInfo, isAdmin } = usePortfolio();
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.email);
+    navigator.clipboard.writeText(personalInfo.email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -22,21 +24,34 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
     <header id="header-section" className="pt-10 md:pt-14 pb-8 border-b border-[#1A1A1A]/20 dark:border-zinc-800">
       {/* Top Masthead: Identity & Controls */}
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
           <div className="shrink-0">
             <img
-              src={PERSONAL_INFO.avatarUrl}
-              alt="Lance Nguyen"
+              src={personalInfo.avatarUrl}
+              alt={personalInfo.name}
               className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover ring-1 ring-[#1A1A1A]/20 dark:ring-zinc-700 shadow-sm transition-transform duration-300 hover:scale-105"
             />
           </div>
 
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tighter uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC]">
-              {PERSONAL_INFO.name}
-            </h1>
-            <p className="text-xs sm:text-sm uppercase tracking-widest font-mono text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-medium">
-              Avionics GSE, Test, Electrical, and Control Systems
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-semibold tracking-tighter uppercase font-sans text-[#1A1A1A] dark:text-[#EDEDEC] whitespace-nowrap">
+                {personalInfo.name}
+              </h1>
+              {isAdmin && onEditProfile && (
+                <button
+                  type="button"
+                  onClick={onEditProfile}
+                  className="p-1 rounded bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors cursor-pointer text-[10px] font-mono inline-flex items-center gap-1 border border-[#1A1A1A]/10 dark:border-zinc-700 shrink-0"
+                  title="Edit Profile, Bio & Contact Details"
+                >
+                  <Pencil className="w-3 h-3" />
+                  <span className="hidden sm:inline">Edit Bio</span>
+                </button>
+              )}
+            </div>
+            <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-wider font-mono text-[#1A1A1A]/60 dark:text-zinc-400 mt-1 font-medium whitespace-nowrap overflow-x-auto no-scrollbar">
+              {personalInfo.title}
             </p>
           </div>
         </div>
@@ -47,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
           id="theme-toggle-btn"
           aria-label="Toggle color theme"
           onClick={() => setDarkMode(!darkMode)}
-          className="relative inline-flex items-center p-1 rounded-full bg-[#EAEAE5] dark:bg-zinc-800 ring-1 ring-[#1A1A1A]/10 dark:ring-zinc-700 transition-colors focus:outline-none cursor-pointer"
+          className="relative inline-flex items-center p-1 rounded-full bg-[#EAEAE5] dark:bg-zinc-800 ring-1 ring-[#1A1A1A]/10 dark:ring-zinc-700 transition-colors focus:outline-none cursor-pointer shrink-0"
         >
           <div
             className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-[#FDFDFB] dark:bg-zinc-600 shadow-sm transition-transform duration-300 ${
@@ -66,7 +81,13 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
       {/* Editorial Headline Statement / Motto */}
       <div className="my-8 py-6 border-y border-[#1A1A1A]/15 dark:border-zinc-800">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-light leading-[1.2] tracking-tight font-sans text-[#1A1A1A] dark:text-[#EDEDEC] max-w-2xl">
-          Simple systems designed to solve <span className="italic font-serif text-[#3E4E50] dark:text-[#9FB1B3]">complex challenges</span>.
+          {(!personalInfo.tagline || personalInfo.tagline === 'Simple systems designed to solve complex challenges.') ? (
+            <>
+              Simple systems designed to solve <span className="italic font-serif text-[#3E4E50] dark:text-[#9FB1B3]">complex challenges</span>.
+            </>
+          ) : (
+            personalInfo.tagline
+          )}
         </h2>
       </div>
 
@@ -131,13 +152,13 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
           ) : (
             <>
               <Mail className="w-3.5 h-3.5 opacity-70" />
-              <span>{PERSONAL_INFO.email}</span>
+              <span>{personalInfo.email}</span>
             </>
           )}
         </button>
 
         <a
-          href={PERSONAL_INFO.linkedin}
+          href={personalInfo.linkedin}
           target="_blank"
           rel="noopener noreferrer"
           id="linkedin-link-btn"
@@ -161,7 +182,7 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
 
         <div className="ml-auto hidden sm:flex items-center gap-1.5 text-xs font-mono text-[#1A1A1A]/50 dark:text-zinc-400">
           <MapPin className="w-3 h-3 opacity-70" />
-          <span>{PERSONAL_INFO.location}</span>
+          <span>{personalInfo.location}</span>
         </div>
       </div>
     </header>

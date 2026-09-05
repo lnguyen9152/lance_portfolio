@@ -1,18 +1,37 @@
 import React from 'react';
-import { EDUCATION } from '../data/portfolioData';
-import { GraduationCap, Award, Book, Wrench, TrendingUp, BookOpen, Check, ArrowUpRight } from 'lucide-react';
+import { GraduationCap, Award, Book, Wrench, TrendingUp, BookOpen, Check, ArrowUpRight, Pencil } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
-export const AboutSection: React.FC = () => {
+interface AboutSectionProps {
+  onEditEducation?: () => void;
+}
+
+export const AboutSection: React.FC<AboutSectionProps> = ({ onEditEducation }) => {
+  const { education, isAdmin } = usePortfolio();
+
   return (
     <section id="about-section" className="space-y-8 animate-in fade-in duration-300">
       {/* Education Cards */}
       <div className="space-y-6">
-        <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold flex items-center gap-2">
-          <GraduationCap className="w-4 h-4 text-[#1A1A1A]/70 dark:text-zinc-400" />
-          <span>Academic Institutions</span>
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/50 dark:text-zinc-400 font-semibold flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-[#1A1A1A]/70 dark:text-zinc-400" />
+            <span>Academic Institutions</span>
+          </h3>
+          {isAdmin && onEditEducation && (
+            <button
+              type="button"
+              onClick={onEditEducation}
+              className="p-1 rounded bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black text-[#1A1A1A] dark:text-[#EDEDEC] transition-colors cursor-pointer text-[10px] font-mono inline-flex items-center gap-1 border border-[#1A1A1A]/10 dark:border-zinc-700"
+              title="Edit Academic Background & Degrees"
+            >
+              <Pencil className="w-3 h-3" />
+              <span>Edit Education</span>
+            </button>
+          )}
+        </div>
 
-        {EDUCATION.map((edu, idx) => (
+        {education.map((edu, idx) => (
           <div
             key={idx}
             id={`edu-${idx}`}
@@ -24,6 +43,7 @@ export const AboutSection: React.FC = () => {
                   <img
                     src={edu.logo}
                     alt={`${edu.institution} logo`}
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-contain"
                   />
                 </div>
