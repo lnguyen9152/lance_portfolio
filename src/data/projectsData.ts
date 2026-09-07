@@ -45,23 +45,23 @@ export const PROJECTS: Project[] = [
       },
       {
         type: 'list-item',
-        text: "1. Network & Compute Rack: Houses the centralized industrial PC / EtherCAT Master PLC, managed industrial switches, VLAN segmentation, timing masters, and operator telemetry workstations. Acts as the central nervous system connecting the racks to local test consoles and remote launch network backbones."
+        text: "Network & Compute Rack: Houses the centralized industrial PC / EtherCAT Master PLC, managed industrial switches, VLAN segmentation, timing masters, and operator telemetry workstations. Acts as the central nervous system connecting the racks to local test consoles and remote launch network backbones."
       },
       {
         type: 'list-item',
-        text: "2. Stage 1 Low Voltage (~60V) Rack: Dedicated low-voltage power distribution for booster-stage flight computers, telemetry instrumentation, pyro controllers, and guidance sensors."
+        text: "Stage 1 Low Voltage (~60V) Rack: Dedicated low-voltage power distribution for booster-stage flight computers, telemetry instrumentation, pyro controllers, and guidance sensors."
       },
       {
         type: 'list-item',
-        text: "3. Stage 1 High Voltage (>400V) Rack: High-power delivery rack providing >400V power rails for booster-stage electric pump drives, stage actuation, and TVCA gimbal systems, equipped with integrated Ground Fault Monitoring and safety contactors."
+        text: "Stage 1 High Voltage (>400V) Rack: High-power delivery rack providing >400V power rails for booster-stage electric pump drives, stage actuation, and TVCA gimbal systems, equipped with integrated Ground Fault Monitoring and safety contactors."
       },
       {
         type: 'list-item',
-        text: "4. Stage 2 Low Voltage (~60V) Rack: Tailored for upper-stage avionics, powering orbital flight computers, payload bay controllers, cold-gas RCS drivers, and stage communications."
+        text: "Stage 2 Low Voltage (~60V) Rack: Tailored for upper-stage avionics, powering orbital flight computers, payload bay controllers, cold-gas RCS drivers, and stage communications."
       },
       {
         type: 'list-item',
-        text: "5. Stage 2 High Voltage (>400V) Rack: High-voltage supply and safety switching for upper-stage actuators, TVCA systems, and main pump drives with isolated ground monitoring."
+        text: "Stage 2 High Voltage (>400V) Rack: High-voltage supply and safety switching for upper-stage actuators, TVCA systems, and main pump drives with isolated ground monitoring."
       },
       {
         type: 'heading',
@@ -197,23 +197,27 @@ export const PROJECTS: Project[] = [
       },
       {
         type: 'heading',
-        text: "Multi-Site Deployment & Commissioning"
+        text: "Rack Variation: Engine Checkout Rack"
       },
       {
         type: 'paragraph',
-        text: "Following comprehensive integration and factory acceptance testing, I deployed and field-commissioned rack suites across Relativity's premier operational facilities:"
+        text: "Leveraging the common electrical topology, EtherCAT controls, and safety architecture developed for the primary Vehicle Support Racks, I designed the Engine Checkout Rack as a dedicated ground power and checkout station for rocket engine controllers and engine subsystems prior to thrust structure integration and static hot-fire campaigns:"
       },
       {
         type: 'list-item',
-        text: "Wormhole (Headquarters - Long Beach, CA): Integrated into the main manufacturing lane to power stage assembly, vehicle-level avionics integration, and factory qualification testing."
+        text: "Engine Controller Power & Telemetry: Delivers highly regulated, low-noise power to flight engine controllers, establishing deterministic communication channels for flashing flight firmware, reading health registers, and logging critical sensor telemetry."
       },
       {
         type: 'list-item',
-        text: "NASA Stennis Space Center (Hancock County, MS): Deployed to engine and stage static test stands, supporting cryogenic test campaigns and high-power actuation runs under extreme environmental conditions."
+        text: "Sensor & Actuator Interface Verification: Interfaces directly with engine instrumentation harnesses, verifying continuity and calibration across pressure transducers, RTDs, thermocouples, igniters, and cryogenic solenoid valves."
       },
       {
         type: 'list-item',
-        text: "Cape Canaveral Space Force Station (LC-16 - FL): Commissioned at the launch site to serve as the definitive launch-pad ground support equipment interfacing directly with the launch vehicle umbilicals and launch control center."
+        text: "Subsystem Cold Checkout: Enables full electrical and logical checkouts of the complete engine powerhead assembly on the shop floor or test cell without requiring full vehicle umbilical hookups."
+      },
+      {
+        type: 'list-item',
+        text: "Integrated Safety Interlocks: Incorporates custom interlock hardware and current-limiting protections to safeguard sensitive flight engine controllers against over-voltage, reverse polarity, or ground faults during ground checkout."
       }
     ]
   },

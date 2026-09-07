@@ -13,6 +13,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -39,18 +40,25 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsVerifying(true);
 
-    const isAuthorized = login(password);
-    if (isAuthorized) {
-      setSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 700);
-    } else {
-      setError('Incorrect passphrase. Verification failed.');
+    try {
+      const isAuthorized = await login(password);
+      if (isAuthorized) {
+        setSuccess(true);
+        setTimeout(() => {
+          onClose();
+        }, 600);
+      } else {
+        setError('Incorrect passphrase. Verification failed.');
+      }
+    } catch {
+      setError('Verification error. Please try again.');
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -145,11 +153,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
             </button>
             <button
               type="submit"
-              disabled={!password || success}
+              disabled={!password || success || isVerifying}
               className="px-4 py-1.5 text-xs font-mono uppercase tracking-wider rounded-sm bg-[#1A1A1A] dark:bg-[#EDEDEC] text-[#FDFDFB] dark:text-[#141413] font-medium hover:opacity-90 disabled:opacity-40 transition-opacity cursor-pointer flex items-center gap-1.5"
             >
               <Key className="w-3 h-3" />
-              <span>Authenticate</span>
+              <span>{isVerifying ? 'Verifying...' : 'Authenticate'}</span>
             </button>
           </div>
         </form>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Mail, Linkedin, FileText, Check, ArrowUpRight, Sun, Moon, MapPin, Pencil } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Mail, Linkedin, FileText, Check, ArrowUpRight, Sun, Moon, MapPin, Pencil, Camera } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
+import { ImageCropModal } from './ImageCropModal';
 
 interface HeaderProps {
   darkMode: boolean;
@@ -11,8 +12,10 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigateSection, onOpenResume, onEditProfile }) => {
-  const { personalInfo, isAdmin } = usePortfolio();
+  const { personalInfo, updatePersonalInfo, isAdmin } = usePortfolio();
   const [copied, setCopied] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personalInfo.email);
@@ -20,18 +23,78 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        if (dataUrl) {
+          setCropImageSrc(dataUrl);
+        }
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    }
+  };
+
+  const handleAvatarDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    if (!isAdmin) return;
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        if (dataUrl) {
+          setCropImageSrc(dataUrl);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <header id="header-section" className="pt-10 md:pt-14 pb-8 border-b border-[#1A1A1A]/20 dark:border-zinc-800">
       {/* Top Masthead: Identity & Controls */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4 min-w-0">
-          <div className="shrink-0">
-            <img
-              src={personalInfo.avatarUrl}
-              alt={personalInfo.name}
-              className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover ring-1 ring-[#1A1A1A]/20 dark:ring-zinc-700 shadow-sm transition-transform duration-300 hover:scale-105"
-            />
-          </div>
+          {isAdmin ? (
+            <div
+              className="shrink-0 relative group cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleAvatarDrop}
+              title="Click or drop photo to reposition & crop"
+            >
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarFileChange}
+              />
+              <img
+                src={personalInfo.avatarUrl}
+                alt={personalInfo.name}
+                referrerPolicy="no-referrer"
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover ring-1 ring-[#1A1A1A]/20 dark:ring-zinc-700 shadow-sm transition-all duration-300 group-hover:opacity-85"
+              />
+              <div className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-[9px] font-mono">
+                <Camera className="w-4 h-4 mb-0.5" />
+                <span>Swap</span>
+              </div>
+            </div>
+          ) : (
+            <div className="shrink-0">
+              <img
+                src={personalInfo.avatarUrl}
+                alt={personalInfo.name}
+                referrerPolicy="no-referrer"
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover ring-1 ring-[#1A1A1A]/20 dark:ring-zinc-700 shadow-sm"
+              />
+            </div>
+          )}
 
           <div className="min-w-0">
             <div className="flex items-center gap-2">
@@ -185,6 +248,22 @@ export const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, onNavigat
           <span>{personalInfo.location}</span>
         </div>
       </div>
+
+      {/* Interactive Move & Crop Modal (Only available when authorized as admin) */}
+      {isAdmin && (
+        <ImageCropModal
+          isOpen={!!cropImageSrc}
+          imageSrc={cropImageSrc || ''}
+          onClose={() => setCropImageSrc(null)}
+          onCropComplete={(croppedDataUrl) => {
+            updatePersonalInfo({
+              ...personalInfo,
+              avatarUrl: croppedDataUrl,
+            });
+          }}
+          title="Move & Crop Profile Photo"
+        />
+      )}
     </header>
   );
 };

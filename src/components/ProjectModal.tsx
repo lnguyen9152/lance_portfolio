@@ -201,18 +201,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
               </p>
             </div>
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 pt-2 pb-1 border-y border-[#1A1A1A]/10 dark:border-zinc-800">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded-sm text-[10px] font-mono uppercase tracking-wider bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A]/70 dark:text-zinc-400 border border-[#1A1A1A]/5 dark:border-zinc-700"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-
             {/* PDF Download or External Link Banner if present */}
             {project.pdfUrl && (
               <div className="p-4 rounded-sm bg-[#EFECE6]/70 dark:bg-zinc-900/80 border border-[#1A1A1A]/15 dark:border-zinc-800 flex items-center justify-between gap-4">

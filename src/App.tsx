@@ -276,50 +276,50 @@ function PortfolioContent() {
         onEditProfile={() => setIsEditProfileOpen(true)}
       />
 
-      {/* Admin Login Modal (password: @Blackops9152) */}
+      {/* Admin Login Modal */}
       <AdminLoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
       />
 
-      {/* Edit Project / Article Modal */}
-      <EditProjectModal
-        project={editingProject}
-        isOpen={isEditProjectOpen}
-        onClose={() => {
-          setIsEditProjectOpen(false);
-          setEditingProject(null);
-        }}
-        onSaved={(updatedProj) => {
-          if (selectedProject && selectedProject.id === updatedProj.id) {
-            setSelectedProject(updatedProj);
-          }
-        }}
-      />
+      {/* Admin Edit Modals (Only mounted when authorized) */}
+      {isAdmin && (
+        <>
+          <EditProjectModal
+            project={editingProject}
+            isOpen={isEditProjectOpen}
+            onClose={() => {
+              setIsEditProjectOpen(false);
+              setEditingProject(null);
+            }}
+            onSaved={(updatedProj) => {
+              if (selectedProject && selectedProject.id === updatedProj.id) {
+                setSelectedProject(updatedProj);
+              }
+            }}
+          />
 
-      {/* Edit Profile & Bio Modal */}
-      <EditProfileModal
-        isOpen={isEditProfileOpen}
-        onClose={() => setIsEditProfileOpen(false)}
-      />
+          <EditProfileModal
+            isOpen={isEditProfileOpen}
+            onClose={() => setIsEditProfileOpen(false)}
+          />
 
-      {/* Edit Work Experience Modal */}
-      <EditExperienceModal
-        isOpen={isEditExperienceOpen}
-        onClose={() => setIsEditExperienceOpen(false)}
-      />
+          <EditExperienceModal
+            isOpen={isEditExperienceOpen}
+            onClose={() => setIsEditExperienceOpen(false)}
+          />
 
-      {/* Edit Education Modal */}
-      <EditEducationModal
-        isOpen={isEditEducationOpen}
-        onClose={() => setIsEditEducationOpen(false)}
-      />
+          <EditEducationModal
+            isOpen={isEditEducationOpen}
+            onClose={() => setIsEditEducationOpen(false)}
+          />
 
-      {/* Edit Publications Modal */}
-      <EditPublicationsModal
-        isOpen={isEditPublicationsOpen}
-        onClose={() => setIsEditPublicationsOpen(false)}
-      />
+          <EditPublicationsModal
+            isOpen={isEditPublicationsOpen}
+            onClose={() => setIsEditPublicationsOpen(false)}
+          />
+        </>
+      )}
 
       {/* Case Study Full Deep Dive Modal */}
       <ProjectModal

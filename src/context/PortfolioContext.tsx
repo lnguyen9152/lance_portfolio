@@ -8,13 +8,14 @@ import {
   PUBLICATIONS as DEFAULT_PUBLICATIONS,
   RESUME_SKILLS as DEFAULT_RESUME_SKILLS,
 } from '../data/portfolioData';
+import { verifyPassphrase } from '../utils/authCrypto';
 
 export type PersonalInfoType = typeof DEFAULT_PERSONAL_INFO;
 export type ResumeSkillsType = typeof DEFAULT_RESUME_SKILLS;
 
 interface PortfolioContextType {
   isAdmin: boolean;
-  login: (passphrase: string) => boolean;
+  login: (passphrase: string) => Promise<boolean>;
   logout: () => void;
 
   projects: Project[];
@@ -105,6 +106,9 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               parsed.bioLong[1] = 'Previously, I engineered critical instrumentation, alarm optimization, and PLC/HMI control systems as an Instrumentation, Controls, and Electrical Engineer at British Petroleum. I hold a B.S. in Electrical Engineering from George Mason University.';
             }
           }
+          if (parsed.avatarUrl === '/lance_profile_photo.jpg') {
+            parsed.avatarUrl = DEFAULT_PERSONAL_INFO.avatarUrl;
+          }
           localStorage.setItem(STORAGE_KEYS.PERSONAL_INFO, JSON.stringify(parsed));
           return parsed;
         }
@@ -123,7 +127,14 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed.map((item: ExperienceItem) => {
+            const updated = parsed.map((item: ExperienceItem) => {
+              if (item.company?.includes('Relativity Space') && item.role?.includes('Avionics Test GSE Engineer II')) {
+                const highlights = Array.isArray(item.highlights) ? [...item.highlights] : [];
+                if (highlights.length > 0) {
+                  highlights[0] = "Lead engineer for the design, integration, and ongoing development of high-reliability ground support systems, ensuring mission readiness and supporting Terran R’s integration, test, and launch phases.";
+                }
+                return { ...item, highlights };
+              }
               if (item.company?.includes('George Mason University') && item.logo?.includes('cbbf386a3d934bbbb9c57d81966a3d82')) {
                 return { ...item, logo: '/gmu_logo.jpg' };
               }
@@ -135,6 +146,8 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               }
               return item;
             });
+            localStorage.setItem(STORAGE_KEYS.EXPERIENCE, JSON.stringify(updated));
+            return updated;
           }
         }
       } catch (e) {
@@ -260,9 +273,10 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   }, []);
 
-  // Login handler
-  const login = (passphrase: string): boolean => {
-    if (passphrase === '@Blackops9152') {
+  // Cryptographic login handler using salted SHA-256
+  const login = async (passphrase: string): Promise<boolean> => {
+    const isAuthorized = await verifyPassphrase(passphrase);
+    if (isAuthorized) {
       setIsAdmin(true);
       return true;
     }

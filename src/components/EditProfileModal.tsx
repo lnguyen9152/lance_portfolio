@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { X, Save, Plus, Trash2, User, Mail, Linkedin, MapPin } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Save, Plus, Trash2, User, Mail, Linkedin, MapPin, Upload, Move } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
+import { ImageCropModal } from './ImageCropModal';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -20,6 +21,23 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
   const [linkedin, setLinkedin] = useState('');
   const [location, setLocation] = useState('');
   const [status, setStatus] = useState('');
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const modalFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleModalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        if (dataUrl) {
+          setCropImageSrc(dataUrl);
+        }
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    }
+  };
 
   useEffect(() => {
     if (personalInfo) {
@@ -155,22 +173,59 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] font-mono uppercase tracking-wider text-[#1A1A1A]/70 dark:text-zinc-400 font-semibold">
-              Avatar Image URL
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-[11px] font-mono uppercase tracking-wider text-[#1A1A1A]/70 dark:text-zinc-400 font-semibold">
+                Avatar Photo (Exact Image File / URL)
+              </label>
+              <button
+                type="button"
+                onClick={() => modalFileInputRef.current?.click()}
+                className="text-[11px] font-mono text-[#3E4E50] dark:text-[#9FB1B3] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <Upload className="w-3 h-3" />
+                <span>Upload Exact File</span>
+              </button>
+            </div>
+            <input
+              type="file"
+              ref={modalFileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleModalFileChange}
+            />
             <div className="flex gap-3 items-center">
               <input
                 type="text"
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
+                placeholder="Image URL or upload file via button"
                 className="flex-1 px-3 py-2 text-xs font-mono rounded-sm border border-[#1A1A1A]/20 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white"
               />
+              <button
+                type="button"
+                onClick={() => modalFileInputRef.current?.click()}
+                className="px-3 py-2 text-xs font-mono rounded-sm border border-[#1A1A1A]/20 dark:border-zinc-700 bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors cursor-pointer shrink-0"
+              >
+                Browse...
+              </button>
               {avatarUrl && (
-                <img
-                  src={avatarUrl}
-                  alt="Avatar preview"
-                  className="w-10 h-10 rounded-full object-cover border border-[#1A1A1A]/20 dark:border-zinc-700 shrink-0"
-                />
+                <div className="flex items-center gap-2 shrink-0">
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar preview"
+                    referrerPolicy="no-referrer"
+                    className="w-10 h-10 rounded-full object-cover border border-[#1A1A1A]/20 dark:border-zinc-700 shrink-0"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setCropImageSrc(avatarUrl)}
+                    className="px-2.5 py-1 text-[11px] font-mono border border-[#1A1A1A]/20 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black rounded-sm transition-colors cursor-pointer flex items-center gap-1"
+                    title="Reposition or crop current avatar"
+                  >
+                    <Move className="w-3 h-3" />
+                    <span>Move & Crop</span>
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -281,6 +336,15 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
           </div>
         </form>
       </div>
+
+      {/* Image Crop & Move Modal */}
+      <ImageCropModal
+        isOpen={!!cropImageSrc}
+        imageSrc={cropImageSrc || ''}
+        onClose={() => setCropImageSrc(null)}
+        onCropComplete={(cropped) => setAvatarUrl(cropped)}
+        title="Position & Crop Profile Photo"
+      />
     </div>
   );
 };

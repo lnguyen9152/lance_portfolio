@@ -134,84 +134,90 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenResu
           <span>Technical Skills, Certifications & Credentials</span>
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
-            <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
-              <Code2 className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
-              <span>Programming & Controls Languages</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {RESUME_SKILLS.programmingLanguages.map((lang, lIdx) => (
-                <span
-                  key={lIdx}
-                  className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
-                >
-                  {lang}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
-            <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
-              <Wrench className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
-              <span>Engineering Systems, Protocols & Methodologies</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {RESUME_SKILLS.technicalSkills.map((skill, sIdx) => (
-                <span
-                  key={sIdx}
-                  className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {RESUME_SKILLS.certifications && (
-            <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+          {/* Left Column: Engineering Systems, Protocols & Methodologies */}
+          <div className="h-full">
+            <div id="skills-systems-card" className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3 h-full">
               <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
-                <Award className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
-                <span>Certifications & Safety Qualifications</span>
+                <Wrench className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                <span>Engineering Systems, Protocols & Methodologies</span>
               </div>
-              <ul className="space-y-1.5 text-xs text-[#1A1A1A]/80 dark:text-zinc-300 font-sans">
-                {RESUME_SKILLS.certifications.map((cert, cIdx) => (
-                  <li key={cIdx} className="flex items-start gap-2">
-                    <span className="text-[#3E4E50] dark:text-[#9FB1B3] font-bold select-none">•</span>
-                    <span>{cert}</span>
-                  </li>
+              <div className="flex flex-wrap gap-1.5">
+                {RESUME_SKILLS.technicalSkills.map((skill, sIdx) => (
+                  <span
+                    key={sIdx}
+                    className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                  >
+                    {skill}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
-          )}
+          </div>
 
-          {RESUME_SKILLS.languages && (
-            <div className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+          {/* Right Column: Programming Languages, Certifications & Safety, Languages & Honors */}
+          <div className="space-y-4">
+            <div id="skills-programming-card" className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
               <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
-                <Globe className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
-                <span>Languages & Honors</span>
+                <Code2 className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                <span>Programming & Controls Languages</span>
               </div>
-              <div className="space-y-2">
-                <div className="flex flex-wrap gap-1.5">
-                  {RESUME_SKILLS.languages.map((lng, lIdx) => (
-                    <span
-                      key={lIdx}
-                      className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
-                    >
-                      {lng}
-                    </span>
-                  ))}
-                </div>
-                {RESUME_SKILLS.honorsAwards && (
-                  <div className="pt-2 border-t border-[#1A1A1A]/10 dark:border-zinc-800 text-xs text-[#1A1A1A]/70 dark:text-zinc-400 font-sans">
-                    <span className="font-semibold text-[#1A1A1A] dark:text-[#EDEDEC]">Awards: </span>
-                    {RESUME_SKILLS.honorsAwards.join(' • ')}
-                  </div>
-                )}
+              <div className="flex flex-wrap gap-1.5">
+                {RESUME_SKILLS.programmingLanguages.map((lang, lIdx) => (
+                  <span
+                    key={lIdx}
+                    className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                  >
+                    {lang}
+                  </span>
+                ))}
               </div>
             </div>
-          )}
+
+            {RESUME_SKILLS.certifications && (
+              <div id="skills-certifications-card" className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+                <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+                  <Award className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                  <span>Certifications & Safety Qualifications</span>
+                </div>
+                <ul className="space-y-1.5 text-xs text-[#1A1A1A]/80 dark:text-zinc-300 font-sans">
+                  {RESUME_SKILLS.certifications.map((cert, cIdx) => (
+                    <li key={cIdx} className="flex items-start gap-2">
+                      <span className="text-[#3E4E50] dark:text-[#9FB1B3] font-bold select-none">•</span>
+                      <span>{cert}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {RESUME_SKILLS.languages && (
+              <div id="skills-languages-card" className="p-5 rounded-sm border border-[#1A1A1A]/15 dark:border-zinc-800 bg-[#FDFDFB] dark:bg-[#181816] space-y-3">
+                <div className="text-xs font-mono uppercase tracking-wider font-semibold text-[#1A1A1A] dark:text-[#EDEDEC] flex items-center gap-2">
+                  <Globe className="w-3.5 h-3.5 text-[#3E4E50] dark:text-[#9FB1B3]" />
+                  <span>Languages & Honors</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-1.5">
+                    {RESUME_SKILLS.languages.map((lng, lIdx) => (
+                      <span
+                        key={lIdx}
+                        className="text-xs font-mono px-2.5 py-1 rounded-sm bg-[#EFECE6] dark:bg-zinc-800 text-[#1A1A1A] dark:text-zinc-300 border border-[#1A1A1A]/10 dark:border-zinc-700/60"
+                      >
+                        {lng}
+                      </span>
+                    ))}
+                  </div>
+                  {RESUME_SKILLS.honorsAwards && (
+                    <div className="pt-2 border-t border-[#1A1A1A]/10 dark:border-zinc-800 text-xs text-[#1A1A1A]/70 dark:text-zinc-400 font-sans">
+                      <span className="font-semibold text-[#1A1A1A] dark:text-[#EDEDEC]">Awards: </span>
+                      {RESUME_SKILLS.honorsAwards.join(' • ')}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

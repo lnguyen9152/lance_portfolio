@@ -94,7 +94,7 @@ export const WORK_EXPERIENCE: ExperienceItem[] = [
     url: "https://www.relativityspace.com",
     description: "Responsible engineer of a two-person team for the design, integration, and ongoing development of high-reliability ground support systems, ensuring mission readiness and supporting Terran R's integration, test, and launch phases.",
     highlights: [
-      "System owner of a two-person team for the design, integration, and ongoing development of high-reliability ground support systems, ensuring mission readiness and supporting Terran R's integration and testing phases.",
+      "Lead engineer for the design, integration, and ongoing development of high-reliability ground support systems, ensuring mission readiness and supporting Terran R’s integration, test, and launch phases.",
       "Delivered Engine Checkout Racks to propulsion team, ensuring robust testing and validation of flight engines and Terran R Engines with <1 us accuracy.",
       "Support design of ground support racks for low and high voltage electrical buses used to interface with flight hardware.",
       "Collaborated with avionics, propulsion, software, manufacturing, and integration teams to ensure reliable operation for vehicle test and launch.",
