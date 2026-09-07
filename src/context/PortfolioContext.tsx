@@ -106,7 +106,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               parsed.bioLong[1] = 'Previously, I engineered critical instrumentation, alarm optimization, and PLC/HMI control systems as an Instrumentation, Controls, and Electrical Engineer at British Petroleum. I hold a B.S. in Electrical Engineering from George Mason University.';
             }
           }
-          if (parsed.avatarUrl === '/lance_profile_photo.jpg') {
+          if (parsed.avatarUrl && parsed.avatarUrl.includes('static.wixstatic.com')) {
             parsed.avatarUrl = DEFAULT_PERSONAL_INFO.avatarUrl;
           }
           localStorage.setItem(STORAGE_KEYS.PERSONAL_INFO, JSON.stringify(parsed));

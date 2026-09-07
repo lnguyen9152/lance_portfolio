@@ -18,7 +18,7 @@ export const PERSONAL_INFO = {
     "I aspire to continue to improve my professional knowledge through the opportunities I'm presented with in both a professional and personal setting. I'm glad to always be curious about how things work, and I hope to learn as much as I can throughout my career.",
     "In my free time, I'm a huge fan of finance and enjoy learning about the commodities and equity markets. My favorite books include 'Reminiscences of a Stock Operator' by Edwin Lefèvre and 'Stock Market Wizards' by Jack D. Schwager. I also have a passion for automotive engineering, performance engine building, and track telemetry."
   ],
-  avatarUrl: "https://static.wixstatic.com/media/32e826_9557d7fe6d8e4adabaf0018629a0577e~mv2.jpeg",
+  avatarUrl: "/profile.jpg",
   email: "lnguyen9152@gmail.com",
   linkedin: "https://www.linkedin.com/in/lance-p-nguyen/",
   resumeUrl: "/resume.html",
