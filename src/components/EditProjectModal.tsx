@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Check,
   ExternalLink,
+  Upload,
 } from 'lucide-react';
 import { Project, ArticleBlock } from '../types';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -334,10 +335,11 @@ export const EditProjectModal: React.FC<EditProjectModalProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-mono uppercase tracking-wider text-[#1A1A1A]/70 dark:text-zinc-400 font-semibold">
-                  Hero Image URL
+                <label className="text-[11px] font-mono uppercase tracking-wider text-[#1A1A1A]/70 dark:text-zinc-400 font-semibold flex items-center justify-between">
+                  <span>Hero Image (Cover Photo)</span>
+                  <span className="text-[10px] text-[#1A1A1A]/50 dark:text-zinc-500 font-normal">Supports /path, URL, or upload from device</span>
                 </label>
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-2 items-center">
                   <input
                     type="text"
                     value={heroImage}
@@ -345,6 +347,27 @@ export const EditProjectModal: React.FC<EditProjectModalProps> = ({
                     placeholder="/my_image.png or https://..."
                     className="flex-1 px-3 py-2 text-xs font-mono rounded-sm border border-[#1A1A1A]/20 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:ring-1 focus:ring-[#1A1A1A] dark:focus:ring-zinc-400 focus:outline-none"
                   />
+                  <label className="px-3 py-2 text-xs font-mono rounded-sm border border-[#1A1A1A]/20 dark:border-zinc-700 bg-[#EFECE6] dark:bg-zinc-800 hover:bg-[#1A1A1A] hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors cursor-pointer flex items-center gap-1.5 shrink-0">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (ev) => {
+                            if (ev.target?.result) {
+                              setHeroImage(ev.target.result as string);
+                            }
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                  </label>
                   {heroImage && (
                     <div className="w-12 h-10 rounded-sm overflow-hidden border border-[#1A1A1A]/10 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shrink-0">
                       <img src={heroImage} alt="Hero preview" className="w-full h-full object-cover" />

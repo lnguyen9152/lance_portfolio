@@ -19,7 +19,7 @@ export const PROJECTS: Project[] = [
       "SCPI & Modbus"
     ],
     shortDesc: "Modular, commonly controlled 5-rack test and launch GSE suite shared across manufacturing, test, and launch sites—comprising Network & Compute, Stage 1 LV & HV, and Stage 2 LV & HV racks with dual LV (~60V) and HV (>400V) buses, EtherCAT PLC safety, and custom harnesses.",
-    heroImage: "/vehicle_racks_cad_cover.jpg",
+    heroImage: "/vehicle_racks_cover.jpg",
     featured: true,
     year: "2025 – Present",
     organization: "Relativity Space",
