@@ -23,14 +23,14 @@ import { EditPublicationsModal } from './components/EditPublicationsModal';
 function PortfolioContent() {
   const { isAdmin } = usePortfolio();
 
-  // Theme state: defaults to light mode unless explicitly saved as dark in localStorage
+  // Theme state: defaults to dark mode
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('lance_theme');
-      if (saved) return saved === 'dark';
-      return false;
+      const savedV2 = localStorage.getItem('lance_theme_v2');
+      if (savedV2) return savedV2 === 'dark';
+      return true;
     }
-    return false;
+    return true;
   });
 
   // Section navigation state
@@ -76,9 +76,11 @@ function PortfolioContent() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('lance_theme_v2', 'dark');
       localStorage.setItem('lance_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('lance_theme_v2', 'light');
       localStorage.setItem('lance_theme', 'light');
     }
   }, [darkMode]);
